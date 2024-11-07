@@ -25,11 +25,11 @@ class BrochureMenu extends MusicBeatState
 		bg.antialiasing = true;
 		add(bg);
 
-		cscroll = new FlxBackdrop(Paths.image("story/selecting/cscroll"), X);
+		cscroll = new FlxBackdrop(Paths.image("story/selecting/cscroll"), 0x01);
 		cscroll.origin.set(0, 0);
 		cscroll.scale.scale(1.55);
 		cscroll.alpha = 0.000000009;
-		fscroll = new FlxBackdrop(Paths.image("story/selecting/fscroll"), X);
+		fscroll = new FlxBackdrop(Paths.image("story/selecting/fscroll"), 0x01);
 		fscroll.origin.set(0, 0);
 		fscroll.scale.scale(1.55);
 		fscroll.alpha = 0.000000009;
