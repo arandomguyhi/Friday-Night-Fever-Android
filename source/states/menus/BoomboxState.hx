@@ -35,6 +35,8 @@ class BoomboxState extends MusicBeatState
 		bg.antialiasing = true;
 		add(bg);
 
+		#if android addVirtualPad(FULL, B); #end
+
 		updateText();
 	}
 
