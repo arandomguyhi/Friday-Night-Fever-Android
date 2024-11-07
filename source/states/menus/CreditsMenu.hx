@@ -171,6 +171,8 @@ class CreditsMenu extends MusicBeatState
 		hand.antialiasing = true;
 		hand.updateHitbox();
 		add(hand);
+
+		#if android addVirtualPad(NONE, B); #end
 	}
 
 	function onMouseOver(obj:FlxSprite)
