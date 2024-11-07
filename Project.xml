@@ -29,7 +29,7 @@
 	<window vsync="false" antialiasing="0" if="cpp" />
 
 	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" resizable="false"/>
+	<window if="mobile" orientation="landscape" fullscreen="true" resizable="false"/>
 
 	<!--Switch-specific-->
 	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
@@ -114,9 +114,10 @@
 	<haxelib name="flixel-addons" />
 	<haxelib name="flixel-ui" />
 	<haxelib name="flxanimate" />
+	<haxelib name="extension-androidtools" if="android" />
 	<haxelib name="discord_rpc" if="windows"/>
 	<haxelib name="hxCodec" if="desktop" />
-	<haxelib name="linc_luajit" unless="html"/>
+	<haxelib name="linc_luajit" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
@@ -129,6 +130,7 @@
 	<!-- Show debug traces for hxCodec -->
 	<!--<haxedef name="HXC_DEBUG_TRACE" if="debug" />-->
 
+	<!-- Make's the game use less ram -->
 	<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
 
 	<!-- _________________________________ Custom _______________________________ -->
