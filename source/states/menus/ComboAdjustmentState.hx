@@ -137,6 +137,7 @@ class ComboAdjustmentState extends MusicBeatState
 			}
 			ms.setPosition(ClientPrefs.msX, ClientPrefs.msY);
 		}
+		#if android addVirtualPad(NONE, B); #end
 	}
 
 	private function generateStaticArrows(grp:FlxTypedGroup<FlxSprite>, centerPoint:Float, isPlayer:Bool = true):Void
