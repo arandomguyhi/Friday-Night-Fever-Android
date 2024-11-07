@@ -1282,7 +1282,7 @@ class PlayState extends MusicBeatState
 
 		if (ClientPrefs.boombox)
 		{
-			vocals.amplitude = FlxG.sound.music.amplitude = ClientPrefs.songPitch;
+			vocals.bpm = FlxG.sound.music.bpm *= ClientPrefs.songPitch;
 		}
 
 		songPosBG = new FlxSprite(0, 10).loadGraphicFromSprite(healthBarBG);
