@@ -54,10 +54,10 @@ class HaxeScript extends Interp implements IFlxDestroyable
 			if (destroy)
 				item.destroy();
 		},
-		"createBackdrop" => (img:String, spacingX:Int = 0, spacingY:Int = 0, repeatY:Bool = false) ->
+		"createBackdrop" => (img:String, ?spacingX:Int = 0, ?spacingY:Int = 0, ?repeatY:Bool = false) ->
 		{
 			// doing new FlxBackdrop contains evil enums in the constructor so we cant do that in hscript
-			return new FlxBackdrop(img, repeatY ? FlxAxes.XY : FlxAxes.X, spacingX, spacingY);
+			return new FlxBackdrop(img, repeatY ? 0x11 : 0x01, spacingX, spacingY);
 		},
 		"tween" => FlxTween.tween,
 		"setNoteX" => (x:Float, num:Int) ->
