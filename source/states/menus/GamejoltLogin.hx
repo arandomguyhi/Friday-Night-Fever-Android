@@ -1,5 +1,6 @@
 package states.menus;
 
+#if windows
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.api.FlxGameJolt;
@@ -252,3 +253,4 @@ class GamejoltLogin extends MusicBeatState
 		'ZERO' => '0'
 	];
 }
+#end
