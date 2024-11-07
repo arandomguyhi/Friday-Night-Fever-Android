@@ -157,6 +157,8 @@ class OptionsState extends MusicBeatState
 		descText.setFormat("VCR OSD Mono", 22, FlxColor.WHITE, CENTER);
 		add(descText);
 
+		#if android addVirtualPad(FULL, A_B); #end
+
 		resetItems();
 		changeMainSelection();
 	}
