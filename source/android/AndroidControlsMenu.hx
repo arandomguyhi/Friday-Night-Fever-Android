@@ -6,6 +6,7 @@ import flixel.ui.FlxButton;
 import flixel.text.FlxText;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import states.menus.OptionsState;
 import android.FlxHitbox;
 import android.AndroidControls.Config;
 import android.FlxVirtualPad;
@@ -57,7 +58,7 @@ class AndroidControlsMenu extends MusicBeatState
 
 		var exitbutton = new FlxButton(FlxG.width - 200, 50, "Exit", function()
 		{
-			FlxG.switchState(new OptionsMenu());
+			FlxG.switchState(new OptionsState());
 		});
 		exitbutton.setGraphicSize(Std.int(exitbutton.width) * 3);
 		exitbutton.label.setFormat(null, 16, 0x333333, "center");
@@ -67,7 +68,7 @@ class AndroidControlsMenu extends MusicBeatState
 		var savebutton = new FlxButton(exitbutton.x, exitbutton.y + 100, "Save", function()
 		{
 			save();
-			FlxG.switchState(new OptionsMenu());
+			FlxG.switchState(new OptionsState());
 		});
 		savebutton.setGraphicSize(Std.int(savebutton.width) * 3);
 		savebutton.label.setFormat(null, 16, 0x333333, "center");
