@@ -220,6 +220,8 @@ class FreeplayMenu extends MusicBeatSubstate
 		add(diffText);
 		diffText.visible = false;
 
+		#if android addVirtualPad(FULL, A_B); #end
+
 		changeSelection();
 		FlxG.camera.scroll.y = -500;
 		FlxTween.tween(FlxG.camera.scroll, {y: 0}, 0.65, {
