@@ -1,4 +1,4 @@
-name: Android Build OG
+name: Android Build
 on: workflow_dispatch
 jobs:
   Build:
@@ -16,16 +16,16 @@ jobs:
         id: setup-ndk
         uses: nttld/setup-ndk@main
         with:
-          ndk-version: r21e
-      - name: Setup Java JDK
+          ndk-version: r25c
 
+      - name: Setup Java JDK
         uses: actions/setup-java@main
         with:
           distribution: 'zulu'
           java-version: '11'
 
       - name: Setup Haxe
-        uses: krdlab/setup-haxe@master
+        uses: krdlab/setup-haxe@38fd78cc3a7960b281cf4a33a63a9c1543ac4598
         with:
           haxe-version: 4.2.5
 
@@ -41,22 +41,14 @@ jobs:
 
       - name: Installing Libraries
         run: |
-          haxelib setup ~/home/runner/haxelib
-          haxelib install hxcpp 4.2.1 > /dev/null --quiet
-          haxelib install lime 7.9.0
-          haxelib install openfl 9.1.0
-          haxelib install flixel 4.11.0
-          haxelib install flixel-tools
-          haxelib install flixel-ui
-          haxelib install flixel-addons 3.0.2
-          haxelib git hxCodec https://github.com/SPLCoding/hxCodec-but-it-works-xd.git
+          haxelib setup ~/haxelib
+          haxelib install hmm --quiet
+          haxelib run hmm install
+          haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp --quiet
           haxelib git linc_luajit https://github.com/Sirox228/linc_luajit
           haxelib git extension-videoview https://github.com/jigsaw-4277821/extension-videoview.git --quiet
           haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools.git
-          haxelib install hscript
-          haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
-          haxelib install hxcpp-debug-server
-          haxelib list
+          haxelib run lime rebuild hxcpp
 
       - name: Configure Android
         run: |
@@ -65,11 +57,6 @@ jobs:
           haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_HOME
           haxelib run lime config JAVA_HOME $JAVA_HOME
           haxelib run lime config ANDROID_SETUP true
-          haxelib set openfl 9.1.0
-          haxelib set lime 7.9.0
-          haxelib set flixel 4.11.0
-          haxelib set flixel-addons 3.0.2
-          haxelib set hxcpp 4.2.1
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
 
@@ -81,7 +68,8 @@ jobs:
         with:
           script: |
             try {
-            	const caches = await github.rest.actions.getActionsCacheList({            		owner: context.repo.owner,
+            	const caches = await github.rest.actions.getActionsCacheList({
+            		owner: context.repo.owner,
             		repo: context.repo.repo,
             	})
             	if (typeof caches.data.actions_caches != null && caches.data.actions_caches.length > 0) {
@@ -114,6 +102,6 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@main
         with:
-          name: PE Android Build
+          name: Lullaby-Android
           path: export/release/android/bin/app/build/outputs/apk/debug
           if-no-files-found: warn
