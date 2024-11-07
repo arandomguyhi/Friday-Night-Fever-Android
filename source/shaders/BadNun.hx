@@ -336,7 +336,7 @@ class SolidColorShader extends FlxShader
 
         void main()
         {
-            vec4 _color = flixel_texture2D(bitmap, openfl_TextureCoordv);
+            vec4 _color = texture2D(bitmap, openfl_TextureCoordv);
 
             if (shaderActive)
             {
@@ -359,7 +359,7 @@ class InvertShader extends FlxShader
 	@:glFragmentSource('
         void main()
         {
-            vec4 _color = flixel_texture2D(bitmap, openfl_TextureCoordv);
+            vec4 _color = texture2D(bitmap, openfl_TextureCoordv);
             _color.xyz = vec(1, 1, 1) - color.xyz;
             
             gl_FragColor = color;
