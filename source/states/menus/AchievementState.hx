@@ -174,6 +174,7 @@ class AchievementState extends MusicBeatState
 				Sys.exit(1);
 			});
 		}
+		#if android addVirtualPad(NONE, B); #end
 	}
 
 	var shadowTime:Bool = false;
