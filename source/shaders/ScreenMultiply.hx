@@ -16,12 +16,12 @@ class ScreenMultiply extends FlxShader
         {
             vec2 fragCoord = openfl_TextureCoordv * res;
             vec2 uv = fragCoord.xy / res.xy;
-            vec4 col = flixel_texture2D(bitmap,uv);
+            vec4 col = texture2D(bitmap,uv);
 
             float u = mod(uv.x * screens, 1.0);
             float v = mod(uv.y * screens, 1.0);
 
-            gl_FragColor = flixel_texture2D(bitmap,vec2(u,v));
+            gl_FragColor = texture2D(bitmap,vec2(u,v));
         }
     ")
 	public function new()
