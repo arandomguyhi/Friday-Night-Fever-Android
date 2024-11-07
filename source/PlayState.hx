@@ -908,6 +908,11 @@ class PlayState extends MusicBeatState
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
+
+		#if android
+	  		addAndroidControls();
+	  	#end
+
 		startingSong = true;
 
 		if (SONG.song.toLowerCase() == 'shadow') // hide hud without removing it plus dialogue stuff
@@ -1104,6 +1109,7 @@ class PlayState extends MusicBeatState
 		startedCountdown = true;
 		skipDialogue = true;
 		inCutscene = false;
+		#if android androidc.visible = true; #end
 
 		if (strumLineNotes.length < 1)
 		{
@@ -1763,7 +1769,7 @@ class PlayState extends MusicBeatState
 
 		scripts.callFunction("onUpdate", [elapsed]);
 
-		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
+		if (FlxG.keys.justPressed.ENTER #if android || FlxG.android.justReleased.BACK #end && startedCountdown && canPause)
 		{
 			persistentUpdate = false;
 			persistentDraw = true;
