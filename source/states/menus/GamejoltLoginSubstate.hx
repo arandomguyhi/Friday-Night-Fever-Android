@@ -1,5 +1,6 @@
 package states.menus;
 
+#if windows
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.api.FlxGameJolt;
@@ -51,3 +52,4 @@ class GamejoltLoginSubstate extends MusicBeatSubstate
 		});
 	}
 }
+#end
