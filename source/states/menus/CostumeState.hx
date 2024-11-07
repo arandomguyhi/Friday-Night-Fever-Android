@@ -136,6 +136,7 @@ class CostumeState extends MusicBeatState
 				}
 			}
 		});
+		#if android addVirtualPad(LEFT_RIGHT, A_B); #end
 	}
 
 	override function update(elapsed:Float)
