@@ -67,7 +67,7 @@ class CreditsMenu extends MusicBeatState
 			credits.push({name: soulsplit[0], credit: soulsplit[1], funny: soulsplit[2] != null ? soulsplit[2] : ""});
 		}
 
-		backdrop = new FlxBackdrop(FlxGridOverlay.createGrid(80, 80, 80 * 2, 80 * 2, true, 0xFF0F8CDE, 0xFF0D7FC1), XY);
+		backdrop = new FlxBackdrop(FlxGridOverlay.createGrid(80, 80, 80 * 2, 80 * 2, true, 0xFF0F8CDE, 0xFF0D7FC1), 0x11);
 		backdrop.velocity.set(25, 25);
 		add(backdrop);
 
