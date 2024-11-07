@@ -13,7 +13,7 @@ import flixel.effects.particles.FlxEmitter;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxRect;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -1275,14 +1275,14 @@ class PlayState extends MusicBeatState
 		}
 		else
 		{
-			FlxG.sound.music.onComplete = endSong;
+			#FlxG.sound.music.onComplete = endSong;
 		}
 
 		vocals.play();
 
 		if (ClientPrefs.boombox)
 		{
-			vocals.pitch = FlxG.sound.music.pitch = ClientPrefs.songPitch;
+			#if FLX_PITCH vocals.pitch = FlxG.sound.music.pitch = ClientPrefs.songPitch; #end
 		}
 
 		songPosBG = new FlxSprite(0, 10).loadGraphicFromSprite(healthBarBG);
