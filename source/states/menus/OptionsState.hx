@@ -32,6 +32,12 @@ class OptionsState extends MusicBeatState
 			]
 		},
 		{
+			"name": "Android Controls",
+			options: [
+				new Option("Controls", "Change your android controls", "", {state: android.AndroidControlsMenu})
+			]
+		},
+		{
 			"name": "Gameplay",
 			options: [
 				new Option("Downscroll", "When enabled, notes will scroll from the top of the screen to the bottom.", "downscroll", BOOL),
