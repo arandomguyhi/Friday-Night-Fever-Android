@@ -161,6 +161,7 @@ class DialogueBox extends FlxTypedSpriteGroup<FlxSprite>
 				startDialogue();
 			}
 		});
+		#if android addVirtualPad(NONE, B); #end
 	}
 
 	override function update(elapsed:Float)
@@ -170,6 +171,17 @@ class DialogueBox extends FlxTypedSpriteGroup<FlxSprite>
 		if (!dialogueStarted)
 			return;
 
+		#if android
+    		var justTouched:Bool = false;
+		for (touch in FlxG.touches.list)
+		{
+			if (touch.justPressed)
+			{
+				justTouched = true;
+			}
+		}
+		#end
+
 		if (FlxG.keys.anyJustPressed([ESCAPE, BACKSPACE]))
 		{
 			return endDialogue();
@@ -178,7 +190,7 @@ class DialogueBox extends FlxTypedSpriteGroup<FlxSprite>
 		text.delay = FlxG.keys.pressed.SHIFT ? 0.02 : 0.033;
 
 		@:privateAccess
-		if (FlxG.keys.anyJustPressed([ENTER, SPACE]) || !text._typing && skip)
+		if (FlxG.keys.anyJustPressed([ENTER, SPACE]) #if android || justTouched #end || !text._typing && skip)
 		{
 			@:privateAccess
 			if (!text._typing)
