@@ -77,6 +77,8 @@ class BrochureMenu extends MusicBeatState
 		text = new FlxText(0, FlxG.height * 0.9, 0, "", 24);
 		text.setFormat("VCR OSD Mono", 22, 0xFFFFFFFF, CENTER);
 		add(text);
+
+		#if android addVirtualPad(LEFT_RIGHT, A_B); #end
 	}
 
 	function changeSelected(firstStart:Bool = false)
