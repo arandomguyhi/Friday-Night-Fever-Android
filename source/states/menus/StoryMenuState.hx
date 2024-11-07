@@ -65,6 +65,8 @@ class StoryMenuState extends InteractableState
 		else
 			loadFrenzy();
 
+		#if android addVirtualPad(NONE, B); #end
+
 		add(hand);
 	}
 
