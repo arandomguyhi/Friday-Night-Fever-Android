@@ -41,7 +41,7 @@ jobs:
 
       - name: Installing Libraries
         run: |
-          haxelib setup ~/haxelib
+          haxelib setup ~/home/runner/haxelib
           haxelib install hxcpp 4.2.1 > /dev/null --quiet
           haxelib install lime 7.9.0
           haxelib install openfl 9.1.0
