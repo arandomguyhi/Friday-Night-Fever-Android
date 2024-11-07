@@ -1275,14 +1275,14 @@ class PlayState extends MusicBeatState
 		}
 		else
 		{
-			#FlxG.sound.music.onComplete = endSong;
+			FlxG.sound.music.onComplete = endSong;
 		}
 
 		vocals.play();
 
 		if (ClientPrefs.boombox)
 		{
-			#if FLX_PITCH vocals.pitch = FlxG.sound.music.pitch = ClientPrefs.songPitch; #end
+			vocals.amplitude = FlxG.sound.music.amplitude = ClientPrefs.songPitch;
 		}
 
 		songPosBG = new FlxSprite(0, 10).loadGraphicFromSprite(healthBarBG);
