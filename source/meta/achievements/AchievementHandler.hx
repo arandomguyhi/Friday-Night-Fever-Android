@@ -1,5 +1,6 @@
 package meta.achievements;
 
+#if windows
 import flixel.addons.api.FlxGameJolt;
 
 @:enum abstract Trophy(Int) from Int to Int
@@ -221,3 +222,4 @@ class AchievementHandler
 		ClientPrefs.save();
 	}
 }
+#end
