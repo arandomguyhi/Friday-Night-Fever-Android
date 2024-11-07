@@ -64,7 +64,7 @@ class GrayscaleShader extends FlxShader
 
     void main()
     {
-      vec4 color = flixel_texture2D(bitmap,openfl_TextureCoordv);
+      vec4 color = texture2D(bitmap,openfl_TextureCoordv);
     	gl_FragColor = vec4(grayscale(color),color.a);
     }
   ')
@@ -92,10 +92,10 @@ class ChromaticAbberationShader extends FlxShader // https://www.shadertoy.com/v
 
     vec4 ChromaticAbberation(sampler2D tex, in vec2 uv)
     {
-    	float rChannel = flixel_texture2D(tex, PincushionDistortion(uv, 0.3 * distortion)).r;
-      float gChannel = flixel_texture2D(tex, PincushionDistortion(uv, 0.15 * distortion)).g;
-      float bChannel = flixel_texture2D(tex, PincushionDistortion(uv, 0.075 * distortion)).b;
-      float aChannel = flixel_texture2D(tex, PincushionDistortion(uv, 0)).a;
+    	float rChannel = texture2D(tex, PincushionDistortion(uv, 0.3 * distortion)).r;
+      float gChannel = texture2D(tex, PincushionDistortion(uv, 0.15 * distortion)).g;
+      float bChannel = texture2D(tex, PincushionDistortion(uv, 0.075 * distortion)).b;
+      float aChannel = texture2D(tex, PincushionDistortion(uv, 0)).a;
       vec4 retColor = vec4(rChannel, gChannel, bChannel, aChannel);
       return retColor;
     }
@@ -122,7 +122,7 @@ class BuildingShader extends FlxShader
     void main()
     {
 
-      vec4 color = flixel_texture2D(bitmap,openfl_TextureCoordv);
+      vec4 color = texture2D(bitmap,openfl_TextureCoordv);
       if (color.a > 0.0)
         color-=alphaShit;
 
@@ -214,12 +214,12 @@ class RainShader extends FlxShader // https://www.shadertoy.com/view/WldGRl
 
       uv = (ruv * 1.5 - 1.0) *  vec2(iResolution.x/iResolution.y,1.0);
       vec2 st =  -uv * vec2(1.0+(ruv.y+1.0)*0.5, .04)+vec2(iTime*.2-ruv.y*.1, iTime*.2);
-      float f = flixel_texture2D(iChannel0, st).y * flixel_texture2D(iChannel0, st*.773).x * 1.55;
+      float f = texture2D(iChannel0, st).y * flixel_texture2D(iChannel0, st*.773).x * 1.55;
       f = clamp(pow(abs(f), 12.0) * 3.0, 0.0, (ruv.y+.4)*.14);
       vec3 col;
       col += vec3(f,f,f)*2.;
 
-      gl_FragColor = flixel_texture2D(bitmap,openfl_TextureCoordv)+vec4(col,1.0);
+      gl_FragColor = texture2D(bitmap,openfl_TextureCoordv)+vec4(col,1.0);
     }
   ')
 
@@ -267,7 +267,7 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
         										 (0.5 + 0.1*sin(iTime*200.)*cos(iTime)));
         	look.y = mod(look.y + vShift*glitchModifier, 1.);
         }
-      	vec4 video = flixel_texture2D(bitmap,look);
+      	vec4 video = texture2D(bitmap,look);
 
       	return video;
       }
