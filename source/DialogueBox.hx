@@ -161,7 +161,6 @@ class DialogueBox extends FlxTypedSpriteGroup<FlxSprite>
 				startDialogue();
 			}
 		});
-		#if android addVirtualPad(NONE, B); #end
 	}
 
 	override function update(elapsed:Float)
