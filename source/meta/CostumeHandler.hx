@@ -111,11 +111,13 @@ class CostumeHandler
 		if (fullCombo(["grando", "feel-the-rage"]))
 			unlockCostume(FEVER_MINUS);
 
+		#if windows
 		if (AchievementHandler.hasTrophy(ALL_ACHIEVEMENTS))
 			unlockCostume(FEVER_COAT);
 
 		if (AchievementHandler.hasTrophy(FC_ALL_OG_WEEKS))
 			unlockCostume(CLASSIC);
+		#end
 
 		save();
 	}
