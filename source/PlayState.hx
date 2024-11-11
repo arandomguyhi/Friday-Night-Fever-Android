@@ -1225,7 +1225,7 @@ class PlayState extends MusicBeatState
 	{
 		startingSong = false;
 
-		if (curSong == 'Loaded')
+		/*if (curSong == 'Loaded')
 		{
 			var video = new VideoHandler();
 			canPause = false;
@@ -1240,7 +1240,7 @@ class PlayState extends MusicBeatState
 				video.stop();
 				camGame.fade(FlxColor.BLACK, 0.3, true);
 			}
-		}
+		}*/
 
 		if (SONG.song.toLowerCase() == 'shadow') // so its underhud
 		{
@@ -3291,7 +3291,7 @@ class PlayState extends MusicBeatState
 		if (p && !parried)
 		{
 			trace("PARRY ACHIEVEMENT");
-			AchievementHandler.unlockTrophy(PERFECT_PARRY);
+			//AchievementHandler.unlockTrophy(PERFECT_PARRY);
 		}
 		return parried = p;
 	}
