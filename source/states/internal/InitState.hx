@@ -27,7 +27,7 @@ class InitState extends MusicBeatState
 		loadSave();
 		ClientPrefs.load();
 		Highscore.load();
-		AchievementHandler.initGamejolt();
+		//AchievementHandler.initGamejolt();
 		CostumeHandler.load();
 		PlayerSettings.init();
 
