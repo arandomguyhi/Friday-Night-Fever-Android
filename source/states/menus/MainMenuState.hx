@@ -113,7 +113,6 @@ class MainMenuState extends InteractableState
 		addInteractable(extras);
 
 		var versionShit:FlxText = new FlxText(0, 0, 0, 'Friday Night Fever ${FlxG.stage.application.meta.get("version")}', 12);
-		versionShit.text += AchievementHandler.getUsername() != null ? ' - Signed in as ${AchievementHandler.getUsername()}' : '';
 		versionShit.setFormat("Plunge", 20, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		versionShit.setPosition(FlxG.width - versionShit.width - 10, FlxG.height - versionShit.height - 10);
 		versionShit.antialiasing = true;
