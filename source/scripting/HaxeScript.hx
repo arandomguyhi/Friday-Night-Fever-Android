@@ -253,7 +253,7 @@ class HaxeScript extends Interp implements IFlxDestroyable
 			variables.set(k, v);
 
 		// set up work arounds for abstract classes
-		variables.set("MP4Handler", #if (hxCodec >= "2.6.0") VideoHandler #else MP4Handler #end);
+		//variables.set("MP4Handler", #if (hxCodec >= "2.6.0") VideoHandler #else MP4Handler #end);
 		variables.set("FlxPoint", #if (flixel < "5.0.0") FlxPoint #else flixel.math.FlxPoint.FlxBasePoint #end);
 		variables.set("FlxColor", HScriptColorAccess);
 		var tweenTypes:Dynamic = {
