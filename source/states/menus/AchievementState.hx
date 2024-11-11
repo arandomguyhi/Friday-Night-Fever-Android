@@ -40,7 +40,7 @@ class AchievementState extends MusicBeatState
 		super.create();
 		AchievementHandler.check();
 
-		var backdrop = new FlxBackdrop(FlxGridOverlay.createGrid(80, 80, 80 * 2, 80 * 2, true, 0xFF0F8CDE, 0xFF0D7FC1), XY);
+		var backdrop = new FlxBackdrop(FlxGridOverlay.createGrid(80, 80, 80 * 2, 80 * 2, true, 0xFF0F8CDE, 0xFF0D7FC1), 0x11);
 		backdrop.velocity.set(25, 25);
 		add(backdrop);
 
@@ -183,8 +183,10 @@ class AchievementState extends MusicBeatState
 	{
 		super.update(elapsed);
 
+		#if windows
 		if (FlxG.keys.justPressed.G && !shadowTime)
 			FlxG.switchState(new GamejoltLogin());
+		#end
 
 		if (controls.BACK && !shadowTime)
 			FlxG.switchState(new MainMenuState());
