@@ -3291,7 +3291,7 @@ class PlayState extends MusicBeatState
 		if (p && !parried)
 		{
 			trace("PARRY ACHIEVEMENT");
-			//AchievementHandler.unlockTrophy(PERFECT_PARRY);
+			AchievementHandler.unlockTrophy(PERFECT_PARRY);
 		}
 		return parried = p;
 	}
