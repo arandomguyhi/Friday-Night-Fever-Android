@@ -2,6 +2,7 @@ package meta.achievements;
 
 #if windows
 import flixel.addons.api.FlxGameJolt;
+#end
 
 @:enum abstract Trophy(Int) from Int to Int
 {
@@ -72,6 +73,7 @@ import flixel.addons.api.FlxGameJolt;
 
 class AchievementHandler
 {
+	#if windows
 	public static function initGamejolt()
 	{
 		var byteData = new APIKeys();
@@ -106,6 +108,7 @@ class AchievementHandler
 	{
 		return FlxGameJolt.username.toLowerCase() == "no user" || FlxGameJolt.username == null ? null : FlxGameJolt.username;
 	}
+	#end
 
 	private static function _logIn(?callback:Dynamic)
 	{
@@ -214,12 +217,13 @@ class AchievementHandler
 
 		trace('Unlocked trophy! (ID: ${trophy})');
 		ClientPrefs.curTrophies[trophy] = true;
+		#if windows
 		if (FlxGameJolt.initialized)
 		{
 			FlxGameJolt.addTrophy(trophy);
 		}
+		#end
 
 		ClientPrefs.save();
 	}
 }
-#end
