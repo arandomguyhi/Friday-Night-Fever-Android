@@ -873,16 +873,16 @@ class Controls extends FlxActionSet
 
 	public function getBack():Bool
 	{
-		return #if mobile FlxG.android.justPressed.BACK; #else BACK; #end
+		return #if android FlxG.android.justPressed.BACK; #else BACK; #end
 	}
 
 	public function getRight():Bool
 	{
-		return #if mobile (FlxG.swipes[0] != null && FlxG.swipes[0].angle >= 55 && FlxG.swipes[0].angle <= 135); #else RIGHT_P; #end
+		return #if android (FlxG.swipes[0] != null && FlxG.swipes[0].angle >= 55 && FlxG.swipes[0].angle <= 135); #else RIGHT_P; #end
 	}
 
 	public function getLeft():Bool
 	{
-		return #if mobile (FlxG.swipes[0] != null && FlxG.swipes[0].angle <= -55 && FlxG.swipes[0].angle >= -135); #else LEFT_P; #end
+		return #if android (FlxG.swipes[0] != null && FlxG.swipes[0].angle <= -55 && FlxG.swipes[0].angle >= -135); #else LEFT_P; #end
 	}
 }

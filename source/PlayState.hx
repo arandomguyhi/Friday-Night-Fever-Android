@@ -22,6 +22,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import lime.utils.Assets;
+import openfl.utils.Assets as Xereca;
 import openfl.display.BlendMode;
 import openfl.events.KeyboardEvent;
 import openfl.filters.BitmapFilter;
@@ -38,7 +39,7 @@ import flixel.math.FlxPoint;
 #else
 import flixel.math.FlxPoint.FlxBasePoint as FlxPoint;
 #end
-#if (sys && !mobile)
+#if (sys && !android)
 import Discord.DiscordClient;
 import sys.FileSystem;
 #end
@@ -826,7 +827,7 @@ class PlayState extends MusicBeatState
 		add(healthBar);
 
 		scoreTxt = new FlxText(FlxG.width / 2 - 235, healthBarBG.y + 35, 0, "", 20);
-		scoreTxt.setFormat(Paths.font("vcr.ttf"), #if !mobile 18 #else 24 #end, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), #if !android 18 #else 24 #end, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		updateScoring();
 
 		scoreTxt.borderSize = 1.25;
@@ -1005,7 +1006,7 @@ class PlayState extends MusicBeatState
 	function openDialogue(?callback:Void->Void):Void
 	{
 		var dialoguePath = 'assets/data/${SONG.song.toLowerCase()}/dialogue.xml';
-		if (!sys.FileSystem.exists(dialoguePath))
+		if (!Xereca.exists(dialoguePath))
 		{
 			startCountdown();
 			return;
@@ -1269,7 +1270,7 @@ class PlayState extends MusicBeatState
 		}
 
 		var dialoguePath = 'assets/data/${SONG.song.toLowerCase()}/dialogue-end.xml';
-		if (isStoryMode && sys.FileSystem.exists(dialoguePath))
+		if (isStoryMode && Xereca.exists(dialoguePath))
 		{
 			FlxG.sound.music.onComplete = endingDialogue;
 		}
