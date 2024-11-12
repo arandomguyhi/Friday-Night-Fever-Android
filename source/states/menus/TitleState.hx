@@ -156,7 +156,7 @@ class TitleState extends MusicBeatState
 
 		hueShader.onUpdate();
 
-		if (controls.ACCEPT)
+		if (controls.ACCEPT #if android || pressedEnter #end)
 		{
 			if (!transitioning && skippedIntro)
 			{

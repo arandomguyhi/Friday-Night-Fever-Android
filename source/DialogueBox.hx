@@ -14,7 +14,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxDirection;
 import flixel.util.FlxTimer;
 import haxe.xml.Access;
-import openfl.Assets;
+import openfl.utils.Assets;
 
 using StringTools;
 
@@ -229,7 +229,7 @@ class DialogueBox extends FlxTypedSpriteGroup<FlxSprite>
 		if (action.fadeInMus != null)
 		{
 			var split = action.fadeInMus.split(":");
-			if (lime.utils.Assets.exists(Paths.inst(split[0])))
+			if (openfl.utils.Assets.exists(Paths.inst(split[0])))
 				FlxG.sound.playMusic(Paths.inst(split[0]), 0);
 			else
 				FlxG.sound.playMusic(Paths.music(split[0], daLibrary), 0);
@@ -493,7 +493,7 @@ class DialogueBox extends FlxTypedSpriteGroup<FlxSprite>
 
 	function parseDialogue(rawDialogue:String)
 	{
-		var xml = Xml.parse(sys.io.File.getContent(rawDialogue));
+		var xml = Xml.parse(Assets.getText(rawDialogue));
 		var data:Access = new Access(xml.firstElement());
 		for (a in data.nodes.action)
 		{

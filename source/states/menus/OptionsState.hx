@@ -32,12 +32,6 @@ class OptionsState extends MusicBeatState
 			]
 		},
 		{
-			"name": "Android Controls",
-			options: [
-				new Option("Controls", "Change your android controls", "", {state: android.AndroidControlsMenu})
-			]
-		},
-		{
 			"name": "Gameplay",
 			options: [
 				new Option("Downscroll", "When enabled, notes will scroll from the top of the screen to the bottom.", "downscroll", BOOL),
@@ -163,7 +157,7 @@ class OptionsState extends MusicBeatState
 		descText.setFormat("VCR OSD Mono", 22, FlxColor.WHITE, CENTER);
 		add(descText);
 
-		#if android addVirtualPad(FULL, A_B); #end
+		#if android addVirtualPad(FULL, A_B_C); #end
 
 		resetItems();
 		changeMainSelection();
@@ -218,6 +212,10 @@ class OptionsState extends MusicBeatState
 			changeSelection(-1);
 		else if (controls.DOWN_P)
 			changeSelection(1);
+
+		if (virtualPad.buttonC.justPressed) {
+			FlxG.switchState(new android.AndroidControlsMenu());
+		}
 
 		if (inCategory && (controls.LEFT_P || controls.RIGHT_P))
 		{

@@ -14,6 +14,7 @@ import hscript.Parser;
 import shaders.ScreenMultiply;
 import sys.FileSystem;
 import sys.io.File;
+import openfl.utils.Assets;
 
 using StringTools;
 
@@ -112,7 +113,7 @@ class HaxeScript extends Interp implements IFlxDestroyable
 		if (path == null)
 			path = "assets/data/" + PlayState.SONG.song.toLowerCase() + "/modchart.hx";
 
-		if (!FileSystem.exists(path))
+		if (!Assets.exists(path))
 		{
 			return;
 		}
@@ -128,7 +129,7 @@ class HaxeScript extends Interp implements IFlxDestroyable
 		parser = new Parser();
 		parser.allowJSON = parser.allowTypes = true;
 
-		var rawCode = handleImports(File.getContent(path));
+		var rawCode = handleImports(Assets.getText(path));
 		try
 		{
 			execute(parser.parseString(rawCode));

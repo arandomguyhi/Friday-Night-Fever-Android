@@ -2,6 +2,7 @@ package;
 
 import StringBuf;
 import lime.utils.Assets;
+import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
 
@@ -23,12 +24,12 @@ class CoolUtil
 
 	public static function fileExists(path:String):Bool
 	{
-		return #if !sys lime.utils.Assets.exists(path); #else sys.FileSystem.exists(path); #end
+		return OpenFlAssets.exists(path);
 	}
 
 	public static function getFile(path:String):String
 	{
-		return #if !sys lime.utils.Assets.getText(path); #else sys.io.File.getContent(path); #end
+		return OpenFlAssets.getText(path);
 	}
 
 	public static function difficultyString():String
