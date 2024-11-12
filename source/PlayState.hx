@@ -1670,8 +1670,8 @@ class PlayState extends MusicBeatState
 		if (snowOn) // snow stuff ig idk stealing from hypno
 			snowShader.shader.data.time.value = [Conductor.songPosition / (Conductor.stepCrochet * 8)];
 
-		// Using 180 here since that's the framerate I test with
-		FlxG.camera.followLerp = elapsed * cameraSpeed * (180 / FlxG.drawFramerate);
+		// Using 60 here since that's the framerate I test with
+		FlxG.camera.followLerp = elapsed * cameraSpeed * (60 / FlxG.drawFramerate);
 		iconHurtTimer -= elapsed;
 
 		if (SONG.song.toLowerCase() == 'shadow')
