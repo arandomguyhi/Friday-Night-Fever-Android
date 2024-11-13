@@ -376,7 +376,7 @@ class LuaScript
 
 		// shaders = new Array<LuaShader>();
 
-		var result = LuaL.dostring(lua, OpenFlAssets('assets/data/' + PlayState.SONG.song.toLowerCase() + "/modchart.lua")); // execute le file
+		var result = LuaL.dostring(lua, OpenFlAssets.getText('assets/data/' + PlayState.SONG.song.toLowerCase() + "/modchart.lua")); // execute le file
 
 		if (result != 0)
 		{
