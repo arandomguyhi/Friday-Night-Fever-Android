@@ -114,6 +114,8 @@ class PlayState extends MusicBeatState
 	public static var playerStrums:FlxTypedGroup<FlxSprite> = null;
 	public static var cpuStrums:FlxTypedGroup<FlxSprite> = null;
 
+	public static var loadRep:Bool = false;
+
 	public var health:Float = 1;
 	public var songScore:Float = 0;
 	public var displayedScore:Int = 0;
@@ -2653,7 +2655,7 @@ class PlayState extends MusicBeatState
 		}
 
 		// HOLDS, check for sustain notes
-		if (holdArray.contains(true) && generatedMusic) {
+		if (holdArray.contains(true)) {
 			notes.forEachAlive(function(daNote:Note) {
 				if (daNote.isSustainNote && daNote.canBeHit && daNote.mustPress && holdArray[daNote.noteData])
 					goodNoteHit(daNote);
@@ -2661,7 +2663,7 @@ class PlayState extends MusicBeatState
 		}
 
 		// PRESSES, check for note hits
-		if (pressArray.contains(true) && generatedMusic) 
+		if (pressArray.contains(true)) 
 		{
 			curPlayer.holdTimer = 0;
 		 
@@ -2768,8 +2770,6 @@ class PlayState extends MusicBeatState
 
 		playerStrums.forEach(function(spr:FlxSprite) 
 		{
-			if (opponent)
-				spr.visible = true;
 			if (pressArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
 				spr.animation.play('pressed');
 			if (!holdArray[spr.ID])
@@ -2834,7 +2834,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function goodNoteHit(note:Note):Void
+	function goodNoteHit(note:Note, resetMashViolation = true):Void
 	{
 		if (mashing != 0)
 			mashing = 0;
@@ -3230,15 +3230,6 @@ class PlayState extends MusicBeatState
 	{
 		var textAntialiasing:Bool = width > 1280 ? true : false;
 		scoreTxt.antialiasing = textAntialiasing;
-	}
-
-	override function switchTo(_):Bool
-	{
-		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
-		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
-		FlxG.signals.gameResized.remove(onGameResize);
-
-		return true;
 	}
 
 	function songJump(seconds:Float)

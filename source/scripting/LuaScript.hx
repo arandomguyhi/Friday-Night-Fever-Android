@@ -18,7 +18,7 @@ import llua.State;
 import openfl.display.BitmapData;
 import openfl.filters.ShaderFilter;
 import openfl.geom.Matrix;
-import openfl.util.Assets as OpenFlAssets;
+import openfl.utils.Assets as OpenFlAssets;
 
 class LuaScript
 {

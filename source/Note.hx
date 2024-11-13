@@ -26,6 +26,7 @@ class Note extends FlxSprite
 	public var mustPress:Bool = false;
 	public var noteData:Int = 0;
 	public var canBeHit:Bool = false;
+	public var tooLate:Bool = false;
 	public var animPlayed:Bool;
 	public var wasGoodHit:Bool = false;
 
@@ -209,13 +210,26 @@ class Note extends FlxSprite
 
 		if (mustPress)
 		{
+			// ass
 			if (isSustainNote)
 			{
-				if (strumTime - Conductor.songPosition <= ((166 * 0.5)) && strumTime - Conductor.songPosition >= -166)
+				if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 1.5)
+					&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
 					canBeHit = true;
 				else
 					canBeHit = false;
 			}
+			else
+			{
+				if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
+					&& strumTime < Conductor.songPosition + Conductor.safeZoneOffset)
+					canBeHit = true;
+				else
+					canBeHit = false;
+			}
+
+			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset * Conductor.timeScale && !wasGoodHit)
+				tooLate = true;
 		}
 		else
 		{
@@ -223,6 +237,12 @@ class Note extends FlxSprite
 
 			if (strumTime <= Conductor.songPosition)
 				wasGoodHit = true;
+		}
+
+		if (tooLate)
+		{
+			if (alpha > 0.3)
+				alpha = 0.3;
 		}
 	}
 
