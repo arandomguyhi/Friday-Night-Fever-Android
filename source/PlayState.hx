@@ -2741,7 +2741,6 @@ class PlayState extends MusicBeatState
 				if (ClientPrefs.botplay && daNote.canBeHit && daNote.mustPress || ClientPrefs.botplay && daNote.tooLate && daNote.mustPress) {
 						goodNoteHit(daNote);
 						curPlayer.holdTimer = daNote.sustainLength;
-					}
 				}
 			}
 		});
