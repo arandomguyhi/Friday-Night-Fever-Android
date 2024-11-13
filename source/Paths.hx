@@ -90,7 +90,7 @@ class Paths
 		return sound(key + FlxG.random.int(min, max), library);
 	}
 
-	inline static public function video(key:String, ?library:String)
+	inline static public function video(key:String)
 	{
 		return 'assets/videos/$key.mp4';
 	}

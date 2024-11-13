@@ -1221,7 +1221,7 @@ class PlayState extends MusicBeatState
 
 		if (curSong == 'Loaded')
 		{
-			var video = new VideoHandler();
+			var video:VideoHandler = new VideoHandler();
 			canPause = false;
 			inCutscene = true;
 			video.playVideo(Paths.video("loaded"));
