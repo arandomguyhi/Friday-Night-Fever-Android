@@ -126,7 +126,7 @@ class DialogueBox extends FlxTypedSpriteGroup<FlxSprite>
 
 		box = new FlxSprite(0, 460).loadGraphic(Paths.image("dialogue/box", "shared"));
 		box.updateHitbox();
-		box.screenCenter(0x01);
+		box.screenCenter(X);
 		box.antialiasing = true;
 		add(box);
 
