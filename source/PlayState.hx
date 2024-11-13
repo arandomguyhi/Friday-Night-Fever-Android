@@ -1112,13 +1112,11 @@ class PlayState extends MusicBeatState
 		generateStaticArrows(cpuStrums, FlxG.width * 0.25, false);
 		generateStaticArrows(playerStrums, FlxG.width * 0.75, true);
 
-		#if windows
 		if (executeModchart)
 		{
 			luaModchart = LuaScript.createModchartState();
 			luaModchart.executeState('start', [PlayState.SONG.song]);
 		}
-		#end
 
 		Conductor.songPosition = -Conductor.crochet * 5;
 

@@ -13,7 +13,8 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSave;
 import lime.app.Application;
 import sys.FileSystem;
-import openfl.utils.Assets;
+import lime.utils.Assets
+import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
 
@@ -73,8 +74,7 @@ class InitState extends MusicBeatState
 
 		if (FlxG.save.data.transferred == null)
 		{
-			var path = Sys.getEnv('AppData') + '/ninjamuffin99/funkin.sol';
-			trace('[Save Compatibility] Checking $path for an old save file...');
+			var path = Sys.getEnv('ANDROID_FILES_DIR') + '/ninjamuffin99/funkin.sol';
 
 			if (Assets.exists(path))
 			{
