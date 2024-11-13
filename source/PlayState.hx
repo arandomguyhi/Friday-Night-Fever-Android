@@ -2739,13 +2739,6 @@ class PlayState extends MusicBeatState
 			if (ClientPrefs.downscroll && daNote.y > strumLine.y || !ClientPrefs.downscroll && daNote.y < strumLine.y) {
 				// Force good note hit regardless if it's too late to hit it or not as a fail safe
 				if (ClientPrefs.botplay && daNote.canBeHit && daNote.mustPress || ClientPrefs.botplay && daNote.tooLate && daNote.mustPress) {
-					if (loadRep) {
-						// trace('ReplayNote ' + tmpRepNote.strumtime + ' | ' + tmpRepNote.direction);
-						if (rep.replay.songNotes.contains(FlxMath.roundDecimal(daNote.strumTime, 2))) {
-							goodNoteHit(daNote);
-							curPlayer.holdTimer = daNote.sustainLength;
-						}
-					} else {
 						goodNoteHit(daNote);
 						curPlayer.holdTimer = daNote.sustainLength;
 					}
