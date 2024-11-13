@@ -104,7 +104,7 @@ class PlayState extends MusicBeatState
 
 	private var dataSuffix:Array<String> = ['LEFT', 'DOWN', 'UP', 'RIGHT']; // we do a little backporting
 
-	public var notes:FlxTypedGroup<Note> = new FlxTypedGroup<Note>();
+	public var notes:FlxTypedGroup<Note>;
 
 	private var unspawnNotes:Array<QueuedNote> = [];
 
@@ -305,7 +305,8 @@ class PlayState extends MusicBeatState
 
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camHUD, false);
-		// FlxG.cameras.setDefaultDrawTarget(camGame, true);
+
+		FlxCamera.defaultCameras = [camGame];
 
 		currentTimingShown = new TimingText();
 		currentTimingShown.cameras = [camHUD];
@@ -1112,11 +1113,8 @@ class PlayState extends MusicBeatState
 		inCutscene = false;
 		#if android androidc.visible = true; #end
 
-		if (strumLineNotes.length < 1)
-		{
-			generateStaticArrows(cpuStrums, FlxG.width * 0.25, false);
-			generateStaticArrows(playerStrums, FlxG.width * 0.75, true);
-		}
+		generateStaticArrows(cpuStrums, FlxG.width * 0.25, false);
+		generateStaticArrows(playerStrums, FlxG.width * 0.75, true);
 
 		#if windows
 		if (executeModchart)
@@ -1371,7 +1369,9 @@ class PlayState extends MusicBeatState
 
 		FlxG.sound.list.add(vocals);
 
+		notes = new FlxTypedGroup<Note>();
 		add(notes);
+
 		add(currentTimingShown);
 
 		var totalPlayerNotes:Int = 0;
