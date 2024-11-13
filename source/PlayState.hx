@@ -2705,10 +2705,10 @@ class PlayState extends MusicBeatState
 					dontCheck = true;
 			}
 			if (possibleNotes.length > 0 && !dontCheck) {
-				if (!FlxG.save.data.ghost) {
+				if (!ClientPrefs.ghost) {
 					for (shit in 0...pressArray.length) { // if a direction is hit that shouldn't be
 						if (pressArray[shit] && !directionList.contains(shit))
-							noteMiss(shit, null);
+							noteMiss(shit);
 					}
 				}
 				for (coolNote in possibleNotes) {
@@ -2722,14 +2722,14 @@ class PlayState extends MusicBeatState
 			} else if (!ClientPrefs.ghost) {
 				for (shit in 0...pressArray.length)
 					if (pressArray[shit])
-						noteMiss(shit, null);
+						noteMiss(shit);
 			}
 
 			if (dontCheck && possibleNotes.length > 0 && ClientPrefs.ghost && !ClientPrefs.botplay) {
 				if (mashViolations > 8) {
 					trace('mash violations ' + mashViolations);
 					scoreTxt.color = FlxColor.RED;
-					noteMiss(0, null);
+					noteMiss(0);
 				} else
 					mashViolations++;
 			}
