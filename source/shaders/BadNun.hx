@@ -72,7 +72,7 @@ class BadNun
 		switch (curBeat)
 		{
 			case 96:
-				#if windows PlayState.luaModchart.setVar("showOnlyStrums", true); #end
+				PlayState.luaModchart.setVar("showOnlyStrums", true);
 				enableShader(true);
 				bgColorShader.color.value = [0, 0, 0];
 

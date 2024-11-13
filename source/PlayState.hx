@@ -262,7 +262,7 @@ class PlayState extends MusicBeatState
 		FlxG.sound.cache(Paths.voices(PlayState.SONG.song));
 		FlxG.sound.cache(Paths.inst(PlayState.SONG.song));
 
-		executeModchart = FlxG.save.data.disableModCharts ? false : Xereca.exists(Paths.lua(PlayState.SONG.song.toLowerCase() + "/modchart"));
+		executeModchart = FlxG.save.data.disableModCharts ? false : Xereca.exists('assets/data/' + PlayState.SONG.song.toLowerCase() + '/modchart.lua'));
 		trace('Modchart is working wohoo!');
 
 		#if windows
@@ -1219,7 +1219,7 @@ class PlayState extends MusicBeatState
 	{
 		startingSong = false;
 
-		/*if (curSong == 'Loaded')
+		if (curSong == 'Loaded')
 		{
 			var video = new VideoHandler();
 			canPause = false;
@@ -1234,7 +1234,7 @@ class PlayState extends MusicBeatState
 				video.stop();
 				camGame.fade(FlxColor.BLACK, 0.3, true);
 			}
-		}*/
+		}
 
 		if (SONG.song.toLowerCase() == 'shadow') // so its underhud
 		{

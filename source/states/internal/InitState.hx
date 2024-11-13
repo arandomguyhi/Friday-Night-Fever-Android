@@ -13,6 +13,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSave;
 import lime.app.Application;
 import sys.FileSystem;
+import openfl.utils.Assets;
 
 using StringTools;
 
@@ -45,10 +46,6 @@ class InitState extends MusicBeatState
 		});
 		#end
 
-		#if mobile
-		FlxG.android.preventDefaultKeys = [BACK];
-		#end
-
 		#if SHADOW_BUILD
 		loadShadow();
 		#else
@@ -79,7 +76,7 @@ class InitState extends MusicBeatState
 			var path = Sys.getEnv('AppData') + '/ninjamuffin99/funkin.sol';
 			trace('[Save Compatibility] Checking $path for an old save file...');
 
-			if (FileSystem.exists(path))
+			if (Assets.exists(path))
 			{
 				trace("[Save Compatibility] Found old save file!");
 				var oldSave = new FlxSave();

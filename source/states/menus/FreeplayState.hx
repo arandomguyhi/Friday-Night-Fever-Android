@@ -144,6 +144,7 @@ class FreeplayState extends MusicBeatState
 		{
 			allowInput = false;
 			waitTimer = 0;
+			_virtualpad.visible = false;
 			openSubState(new FreeplayMenu(selectingFrenzy));
 		}
 

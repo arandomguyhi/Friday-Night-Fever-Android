@@ -27,6 +27,10 @@ class TitleState extends MusicBeatState
 	{
 		super.create();
 
+		#if android
+		FlxG.android.preventDefaultKeys = [BACK];
+		#end
+
 		if (FlxG.sound.music == null)
 		{
 			Main.playFreakyMenu();
