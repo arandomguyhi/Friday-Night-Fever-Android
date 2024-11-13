@@ -13,9 +13,6 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import openfl.Lib;
-#if windows
-import llua.Lua;
-#end
 
 class PauseSubState extends MusicBeatSubstate
 {
@@ -159,13 +156,11 @@ class PauseSubState extends MusicBeatSubstate
 					menuItems = difficultyChoices;
 					regenMenu();
 				case "Exit to menu":
-					#if windows
 					if (PlayState.luaModchart != null)
 					{
 						PlayState.luaModchart.die();
 						PlayState.luaModchart = null;
 					}
-					#end
 
 					if (PlayState.isStoryMode)
 						FlxG.switchState(new StoryMenuState(true));

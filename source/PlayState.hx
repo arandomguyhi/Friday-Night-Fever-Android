@@ -260,10 +260,8 @@ class PlayState extends MusicBeatState
 		FlxG.sound.cache(Paths.voices(PlayState.SONG.song));
 		FlxG.sound.cache(Paths.inst(PlayState.SONG.song));
 
-		#if windows
-		executeModchart = FlxG.save.data.disableModCharts ? false : FileSystem.exists(Paths.lua(PlayState.SONG.song.toLowerCase() + "/modchart"));
-		trace('Mod chart: ' + executeModchart + " - " + Paths.lua(PlayState.SONG.song.toLowerCase() + "/modchart"));
-		#end
+		executeModchart = FlxG.save.data.disableModCharts ? false : Xereca.exists(Paths.lua(PlayState.SONG.song.toLowerCase() + "/modchart"));
+		trace('Modchart is working wohoo!');
 
 		#if windows
 		// Discord Rich Presence
@@ -950,9 +948,6 @@ class PlayState extends MusicBeatState
 			startCountdown();
 		}
 
-		FlxG.keys.preventDefaultKeys = [];
-		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
-		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 		onGameResize(FlxG.stage.window.width, FlxG.stage.window.height);
 
 		for (i in [false, true]) // call both of these so BF_CAM_POS and DAD_CAM_POS are set
@@ -1041,9 +1036,7 @@ class PlayState extends MusicBeatState
 
 	var startTimer:FlxTimer;
 
-	#if windows
 	public static var luaModchart:LuaScript = null;
-	#end
 
 	public function changeStrums(?pixel:Bool) // stolen from yknow that one thing
 	{
@@ -1671,7 +1664,7 @@ class PlayState extends MusicBeatState
 			snowShader.shader.data.time.value = [Conductor.songPosition / (Conductor.stepCrochet * 8)];
 
 		// Using 60 here since that's the framerate I test with
-		FlxG.camera.followLerp = elapsed * cameraSpeed * (60 / FlxG.drawFramerate);
+		FlxG.camera.followLerp = elapsed * cameraSpeed * (180 / FlxG.drawFramerate);
 		iconHurtTimer -= elapsed;
 
 		if (SONG.song.toLowerCase() == 'shadow')
@@ -1707,7 +1700,6 @@ class PlayState extends MusicBeatState
 		if (ClientPrefs.botplay && FlxG.keys.justPressed.ONE)
 			camHUD.visible = !camHUD.visible;
 
-		#if windows
 		if (executeModchart && luaModchart != null && !startingSong)
 		{
 			luaModchart.setVar('songPos', Conductor.songPosition);
@@ -1737,7 +1729,6 @@ class PlayState extends MusicBeatState
 				playerStrums.members[i].visible = p2;
 			}
 		}
-		#end
 
 		if (!inCutscene)
 		{
@@ -1795,13 +1786,11 @@ class PlayState extends MusicBeatState
 			DiscordClient.changePresence("Chart Editor", null, null, true);
 			#end
 			FlxG.switchState(new ChartingState());
-			#if windows
 			if (luaModchart != null)
 			{
 				luaModchart.die();
 				luaModchart = null;
 			}
-			#end
 		}
 
 		if (health >= 2)
@@ -1839,13 +1828,12 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.EIGHT && SONG.song.toLowerCase() != 'shadow')
 		{
 			FlxG.switchState(new AnimationDebug(SONG.player2));
-			#if windows
+
 			if (luaModchart != null)
 			{
 				luaModchart.die();
 				luaModchart = null;
 			}
-			#end
 		}
 		#end
 
@@ -1862,10 +1850,8 @@ class PlayState extends MusicBeatState
 		{
 			Conductor.songPosition += (FlxG.elapsed * 1000) * FlxG.sound.music.pitch;
 
-			#if windows
 			if (luaModchart != null && PlayState.SONG.notes[Std.int(curStep / 16)] != null)
 				luaModchart.setVar("mustHit", PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection);
-			#end
 		}
 
 		if (camZooming)
@@ -2134,10 +2120,8 @@ class PlayState extends MusicBeatState
 
 				cpuStrums.members[daNote.noteData].animation.play('confirm', true);
 
-				#if windows
 				if (luaModchart != null)
 					luaModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
-				#end
 
 				if (SONG.needsVoices)
 					vocals.volume = 1;
@@ -2441,13 +2425,11 @@ class PlayState extends MusicBeatState
 	{
 		skipDialogue = false;
 
-		#if windows
 		if (luaModchart != null)
 		{
 			luaModchart.die();
 			luaModchart = null;
 		}
-		#end
 
 		canPause = false;
 		FlxG.sound.music.volume = 0;
@@ -2481,13 +2463,11 @@ class PlayState extends MusicBeatState
 				transIn = FlxTransitionableState.defaultTransIn;
 				transOut = FlxTransitionableState.defaultTransOut;
 
-				#if windows
 				if (luaModchart != null)
 				{
 					luaModchart.die();
 					luaModchart = null;
 				}
-				#end
 
 				Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 
@@ -2663,51 +2643,118 @@ class PlayState extends MusicBeatState
 	{
 		// control arrays, order L D R U
 		var holdArray:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
+		var pressArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
 
 		// Prevent player input if botplay is on
 		if (ClientPrefs.botplay)
 		{
 			holdArray = [false, false, false, false];
+			pressArray = [false, false, false, false];
 		}
 
 		// HOLDS, check for sustain notes
-		if (holdArray.contains(true))
+		if (holdArray.contains(true) && generatedMusic) {
+			notes.forEachAlive(function(daNote:Note) {
+				if (daNote.isSustainNote && daNote.canBeHit && daNote.mustPress && holdArray[daNote.noteData])
+					goodNoteHit(daNote);
+			});
+		}
+
+		// PRESSES, check for note hits
+		if (pressArray.contains(true) && generatedMusic) 
 		{
-			for (i in 0...holdArray.length)
-			{
-				if (holdArray[i])
-				{
-					if (playerStrums.members[i].animation.curAnim.name != 'confirm')
-					{
-						playerStrums.members[i].animation.play('pressed', true);
+			curPlayer.holdTimer = 0;
+		 
+			var possibleNotes:Array<Note> = []; // notes that can be hit
+			var directionList:Array<Int> = []; // directions that can be hit
+			var dumbNotes:Array<Note> = []; // notes to kill later
+			notes.forEachAlive(function(daNote:Note) {
+				if (daNote.canBeHit && daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit) {
+					if (directionList.contains(daNote.noteData)) {
+						for (coolNote in possibleNotes) {
+							if (coolNote.noteData == daNote.noteData
+								&& Math.abs(daNote.strumTime - coolNote.strumTime) < 10) { // if it's the same note twice at < 10ms distance, just delete it
+								// EXCEPT u cant delete it in this loop cuz it fucks with the collection lol
+								dumbNotes.push(daNote);
+								break;
+							} else if (coolNote.noteData == daNote.noteData
+								&& daNote.strumTime < coolNote.strumTime) { // if daNote is earlier than existing note (coolNote), replace
+								possibleNotes.remove(coolNote);
+								possibleNotes.push(daNote);
+								break;
+							}
+						}
+					} else {
+						possibleNotes.push(daNote);
+						directionList.push(daNote.noteData);
+					}
+				}
+			});
+			for (note in dumbNotes) {
+				FlxG.log.add("killing dumb ass note at " + note.strumTime);
+				note.kill();
+				notes.remove(note, true);
+				note.destroy();
+			}
+			possibleNotes.sort((a, b) -> Std.int(a.strumTime - b.strumTime));
+			var dontCheck = false;
+			for (i in 0...pressArray.length) {
+				if (pressArray[i] && !directionList.contains(i))
+					dontCheck = true;
+			}
+			if (possibleNotes.length > 0 && !dontCheck) {
+				if (!FlxG.save.data.ghost) {
+					for (shit in 0...pressArray.length) { // if a direction is hit that shouldn't be
+						if (pressArray[shit] && !directionList.contains(shit))
+							noteMiss(shit, null);
+					}
+				}
+				for (coolNote in possibleNotes) {
+					if (pressArray[coolNote.noteData]) {
+						if (mashViolations != 0)
+							mashViolations--;
+						scoreTxt.color = FlxColor.WHITE;
+						goodNoteHit(coolNote);
+					}
+				}
+			} else if (!ClientPrefs.ghost) {
+				for (shit in 0...pressArray.length)
+					if (pressArray[shit])
+						noteMiss(shit, null);
+			}
+
+			if (dontCheck && possibleNotes.length > 0 && ClientPrefs.ghost && !ClientPrefs.botplay) {
+				if (mashViolations > 8) {
+					trace('mash violations ' + mashViolations);
+					scoreTxt.color = FlxColor.RED;
+					noteMiss(0, null);
+				} else
+					mashViolations++;
+			}
+		}
+
+		notes.forEachAlive(function(daNote:Note) {
+			if (ClientPrefs.downscroll && daNote.y > strumLine.y || !ClientPrefs.downscroll && daNote.y < strumLine.y) {
+				// Force good note hit regardless if it's too late to hit it or not as a fail safe
+				if (ClientPrefs.botplay && daNote.canBeHit && daNote.mustPress || ClientPrefs.botplay && daNote.tooLate && daNote.mustPress) {
+					if (loadRep) {
+						// trace('ReplayNote ' + tmpRepNote.strumtime + ' | ' + tmpRepNote.direction);
+						if (rep.replay.songNotes.contains(FlxMath.roundDecimal(daNote.strumTime, 2))) {
+							goodNoteHit(daNote);
+							curPlayer.holdTimer = daNote.sustainLength;
+						}
+					} else {
+						goodNoteHit(daNote);
+						curPlayer.holdTimer = daNote.sustainLength;
 					}
 				}
 			}
+		});
 
-			notes.forEachAlive(function(daNote:Note)
-			{
-				if (holdArray[daNote.noteData] && daNote.mustPress && daNote.isSustainNote && daNote.canBeHit)
-					goodNoteHit(daNote);
-			});
-		}
-
-		if (ClientPrefs.botplay)
-		{
-			notes.forEachAlive(function(daNote:Note)
-			{
-				if (daNote.mustPress && daNote.timeDiff <= 15)
-				{
-					goodNoteHit(daNote);
-				}
-			});
-		}
-
-		if (curPlayer.holdTimer > (Conductor.stepCrochet * 0.0011) * 5.78)
+		if (curPlayer.holdTimer > Conductor.stepCrochet * 4 * 0.001 && (!holdArray.contains(true) || ClientPrefs.botplay))
 		{
 			if (curPlayer.animation.curAnim.name.startsWith('sing') && !curPlayer.animation.curAnim.name.endsWith('miss'))
-			{
 				curPlayer.dance();
-			}
 		}
 
 		if (useDirectionalCamera && PlayState.SONG.notes[curSection] != null)
@@ -2718,6 +2765,16 @@ class PlayState extends MusicBeatState
 			camFollow.x = camPos.x + (curAnim == "singLEFT" ? -directionalCameraDist : curAnim == "singRIGHT" ? directionalCameraDist : 0);
 			camFollow.y = camPos.y + (curAnim == "singUP" ? -directionalCameraDist : curAnim == "singDOWN" ? directionalCameraDist : 0);
 		}
+
+		playerStrums.forEach(function(spr:FlxSprite) 
+		{
+			if (opponent)
+				spr.visible = true;
+			if (pressArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
+				spr.animation.play('pressed');
+			if (!holdArray[spr.ID])
+				spr.animation.play('static');
+		});
 
 		strumLineNotes.forEach((spr) ->
 		{
@@ -2744,18 +2801,49 @@ class PlayState extends MusicBeatState
 				boyfriendReflection.playAnim('sing' + dataSuffix[direction] + 'miss', true);
 		}
 
-		#if windows
 		if (luaModchart != null)
 			luaModchart.executeState('playerOneMiss', [direction, Conductor.songPosition]);
-		#end
 
 		totalPlayed += 1;
 		updateScoring();
 	}
 
-	function goodNoteHit(note:Note):Void
+	function getKeyPresses(note:Note):Int {
+		var possibleNotes:Array<Note> = []; // copypasted but you already know that
+		notes.forEachAlive(function(daNote:Note) {
+			if (daNote.canBeHit && daNote.mustPress && !daNote.tooLate) {
+				possibleNotes.push(daNote);
+				possibleNotes.sort((a, b) -> Std.int(a.strumTime - b.strumTime));
+			}
+		});
+		if (possibleNotes.length == 1)
+			return possibleNotes.length + 1;
+		return possibleNotes.length;
+	}
+	var mashing:Int = 0;
+	var mashViolations:Int = 0;
+
+	function noteCheck(controlArray:Array<Bool>, note:Note):Void // sorry lol
 	{
 		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition);
+
+		note.rating = Ratings.CalculateRating(noteDiff);
+
+		if (controlArray[note.noteData]) {
+			goodNoteHit(note, (mashing > getKeyPresses(note)));
+		}
+	}
+
+	function goodNoteHit(note:Note):Void
+	{
+		if (mashing != 0)
+			mashing = 0;
+		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition);
+		note.rating = Ratings.CalculateRating(noteDiff);
+		if (!resetMashViolation && mashViolations >= 1)
+			mashViolations--;
+		if (mashViolations < 0)
+			mashViolations = 0;
 
 		note.rating = ClientPrefs.botplay ? "sick" : Ratings.CalculateRating(noteDiff);
 
@@ -2795,10 +2883,8 @@ class PlayState extends MusicBeatState
 				}
 			}
 
-			#if windows
 			if (luaModchart != null)
 				luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
-			#end
 
 			playerStrums.members[note.noteData].animation.play('confirm', true);
 
@@ -2890,13 +2976,11 @@ class PlayState extends MusicBeatState
 			resyncVocals();
 		}
 
-		#if windows
 		if (executeModchart && luaModchart != null)
 		{
 			luaModchart.setVar('curStep', curStep);
 			luaModchart.executeState('stepHit', [curStep]);
 		}
-		#end
 
 		#if windows
 		// Updating Discord Rich Presence (with Time Left)
@@ -3043,13 +3127,11 @@ class PlayState extends MusicBeatState
 			FlxG.log.add('CHANGED BPM!');
 		}
 
-		#if windows
 		if (executeModchart && luaModchart != null)
 		{
 			luaModchart.setVar('curBeat', curBeat);
 			luaModchart.executeState('beatHit', [curBeat]);
 		}
-		#end
 
 		if (!curOpponent.animation.curAnim.name.startsWith('sing'))
 		{
@@ -3142,82 +3224,6 @@ class PlayState extends MusicBeatState
 		}
 
 		return super.add(object);
-	}
-
-	// NEW INPUT SHIT
-	var keysHeld:Array<Bool> = [false, false, false, false];
-
-	private function onKeyPress(input:KeyboardEvent)
-	{
-		if (ClientPrefs.botplay || paused || inCutscene)
-			return;
-
-		var key:Int = switch (input.keyCode)
-		{
-			case 37: 0; // LEFT ARROW
-			case 40: 1; // DOWN ARROW
-			case 38: 2; // UP ARROW
-			case 39: 3; // RIGHT ARROW
-			default: ClientPrefs.keybinds.indexOf(FlxKey.toStringMap[input.keyCode]); // NOT AN ARROW KEY
-		}
-
-		if (key == -1 || keysHeld[key])
-		{
-			return;
-		}
-		else
-			keysHeld[key] = true;
-
-		// Temporarily sets songPosition to the song's exact timing. does this do anything? more news at 10.
-		var previousTiming:Float = Conductor.songPosition;
-		Conductor.songPosition = FlxG.sound.music.time;
-
-		// Checks for most on-time / late note.
-		var closestNote:Note = null;
-		notes.forEachAlive((note:Note) ->
-		{
-			if (note.mustPress && note.noteData == key && !note.isSustainNote && note.timeDiff <= 166 * FlxG.sound.music.pitch)
-			{
-				if (closestNote == null || closestNote != null && note.timeDiff < closestNote.timeDiff)
-					closestNote = note;
-			}
-		});
-
-		// Player hits note
-		if (closestNote != null)
-		{
-			playerStrums.members[key].animation.play('confirm', true);
-			goodNoteHit(closestNote);
-		}
-		else if (!ClientPrefs.ghost)
-			noteMiss(key);
-
-		Conductor.songPosition = previousTiming;
-	}
-
-	private function onKeyRelease(input:KeyboardEvent)
-	{
-		if (ClientPrefs.botplay || paused || inCutscene)
-			return;
-
-		var key:Int = switch (input.keyCode)
-		{
-			case 37: 0; // LEFT ARROW
-			case 40: 1; // DOWN ARROW
-			case 38: 2; // UP ARROW
-			case 39: 3; // RIGHT ARROW
-			default: ClientPrefs.keybinds.indexOf(FlxKey.toStringMap[input.keyCode]); // NOT AN ARROW KEY
-		}
-
-		if (key == -1)
-			return;
-
-		keysHeld[key] = false;
-
-		if (playerStrums.members[key].animation.curAnim.name != 'static')
-		{
-			playerStrums.members[key].animation.play('static');
-		}
 	}
 
 	function onGameResize(width, height)

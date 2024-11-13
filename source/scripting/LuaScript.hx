@@ -2,7 +2,7 @@ package scripting;
 
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
-#if windows
+
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -18,6 +18,7 @@ import llua.State;
 import openfl.display.BitmapData;
 import openfl.filters.ShaderFilter;
 import openfl.geom.Matrix;
+import openfl.util.Assets as OpenFlAssets;
 
 class LuaScript
 {
@@ -375,7 +376,7 @@ class LuaScript
 
 		// shaders = new Array<LuaShader>();
 
-		var result = LuaL.dofile(lua, Paths.lua(PlayState.SONG.song.toLowerCase() + "/modchart")); // execute le file
+		var result = LuaL.dostring(lua, OpenFlAssets('assets/data/' + PlayState.SONG.song.toLowerCase() + "/modchart.lua")); // execute le file
 
 		if (result != 0)
 		{
@@ -1253,4 +1254,3 @@ class LuaScript
 		return new LuaScript();
 	}
 }
-#end
