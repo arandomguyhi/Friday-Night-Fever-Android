@@ -28,6 +28,7 @@ import openfl.events.KeyboardEvent;
 import openfl.filters.BitmapFilter;
 import openfl.filters.ShaderFilter;
 import openfl.system.System;
+import hxcodec.VideoHandler;
 import scripting.*;
 import shaders.*;
 import sprites.*;
