@@ -13,7 +13,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSave;
 import lime.app.Application;
 import sys.FileSystem;
-import lime.utils.Assets
+import lime.utils.Assets;
 import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
