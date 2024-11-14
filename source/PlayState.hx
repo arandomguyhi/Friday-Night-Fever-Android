@@ -45,6 +45,10 @@ import Discord.DiscordClient;
 import sys.FileSystem;
 #end
 
+#if android
+import android.FlxVirtualPad;
+#end
+
 class PlayState extends MusicBeatState
 {
 	public static var SONG:SwagSong;
@@ -222,6 +226,8 @@ class PlayState extends MusicBeatState
 
 	public var spacePressed:Bool = false;
 	public var gotSmushed:Bool = false; // death stuff
+
+	public var dodgeButton:FlxVirtualPad;
 
 	var emitter:FlxEmitter; // health tween shred effect
 
@@ -914,6 +920,12 @@ class PlayState extends MusicBeatState
 
 		#if android
 	  		addAndroidControls();
+
+			if (SONG.song.toLowerCase() == 'dead-mans-melody') {
+				dodgeButton = new FlxVirtualPad(NONE, A);
+				dodgeButton.alpha = 0.75;
+				add(dodgeButton);
+			}
 	  	#end
 
 		startingSong = true;
@@ -1637,7 +1649,7 @@ class PlayState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		if (controls.DODGE && !ClientPrefs.botplay && SONG.song.toLowerCase() == 'dead-mans-melody' && spaceDelay <= 0)
+		if (controls.DODGE #if android || dodgeButton.buttonA.justPressed #end && !ClientPrefs.botplay && SONG.song.toLowerCase() == 'dead-mans-melody' && spaceDelay <= 0)
 		{
 			trace("GAY");
 

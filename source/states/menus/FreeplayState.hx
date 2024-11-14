@@ -107,7 +107,10 @@ class FreeplayState extends MusicBeatState
 		frenzy.antialiasing = true;
 		add(frenzy);
 
-		#if android addVirtualPad(LEFT_RIGHT, A_B); #end
+		#if android
+			addVirtualPad(LEFT_RIGHT, A_B);
+			_virtualpad.visible = true;
+		#end
 
 		changeSelection(true);
 	}
@@ -165,6 +168,7 @@ class FreeplayState extends MusicBeatState
 		else if (loading)
 		{
 			loading = false;
+			_virtualpad.visible = false;
 
 			if (PlayState.SONG.song.toLowerCase() == "mechanical" || PlayState.SONG.song.toLowerCase() == "erm")
 			{
