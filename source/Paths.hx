@@ -92,7 +92,7 @@ class Paths
 
 	inline static public function video(key:String)
 	{
-		return 'assets/videos/$key.mp4';
+		return Asset2File.getPath('assets/videos/$key.mp4');
 	}
 
 	inline static public function music(key:String, ?library:String)
