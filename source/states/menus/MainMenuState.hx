@@ -139,7 +139,10 @@ class MainMenuState extends InteractableState
 
 		allowInput = true;
 
-		#if android addVirtualPad(NONE, B); #end
+		#if android
+			addVirtualPad(NONE, B);
+			addPadCamera();
+		#end
 	}
 
 	override function update(elapsed:Float)

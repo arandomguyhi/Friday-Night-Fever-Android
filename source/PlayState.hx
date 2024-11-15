@@ -40,7 +40,7 @@ import flixel.math.FlxPoint;
 #else
 import flixel.math.FlxPoint.FlxBasePoint as FlxPoint;
 #end
-#if (sys && !android)
+#if (sys && !mobile)
 import Discord.DiscordClient;
 import sys.FileSystem;
 #end
@@ -269,7 +269,7 @@ class PlayState extends MusicBeatState
 		FlxG.sound.cache(Paths.voices(PlayState.SONG.song));
 		FlxG.sound.cache(Paths.inst(PlayState.SONG.song));
 
-		executeModchart = FlxG.save.data.disableModCharts ? false : openfl.utils.Assets.exists("assets/data/" + PlayState.SONG.song.toLowerCase() + "/modchart.lua");
+		executeModchart = FlxG.save.data.disableModCharts ? false : FileSystem.exists(Paths.lua(PlayState.SONG.song.toLowerCase() + "/modchart"));
 		trace('Modchart is working wohoo!');
 
 		#if windows

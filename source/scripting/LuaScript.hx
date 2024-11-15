@@ -373,7 +373,7 @@ class LuaScript
 		LuaL.openlibs(lua);
 		Lua.init_callbacks(lua);
 
-		var result = LuaL.dostring(lua, openfl.utils.Assets.getText("assets/data/" + PlayState.SONG.song.toLowerCase() + "/modchart.lua")); // execute le file
+		var result = LuaL.dofile(lua, Paths.lua(PlayState.SONG.song.toLowerCase() + "/modchart")); // execute le file
 
 		if (result != 0)
 		{

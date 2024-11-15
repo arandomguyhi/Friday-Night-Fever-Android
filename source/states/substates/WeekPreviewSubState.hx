@@ -131,7 +131,10 @@ class WeekPreviewSubState extends MusicBeatSubstate
 			}
 		});
 
-		#if android addVirtualPad(LEFT_RIGHT, A_B); #end
+		#if android
+			addVirtualPad(LEFT_RIGHT, A_B);
+			addPadCamera();
+		#end
 
 		FlxTween.tween(bg, {x: bg.x - bg.width}, 0.5);
 		updateDifficulty();
