@@ -109,7 +109,6 @@ class FreeplayState extends MusicBeatState
 
 		#if android
 			addVirtualPad(LEFT_RIGHT, A_B);
-			_virtualpad.visible = true;
 		#end
 
 		changeSelection(true);
@@ -164,6 +163,7 @@ class FreeplayState extends MusicBeatState
 		if (!loading && !allowInput)
 		{
 			allowInput = true;
+			_virtualpad.visible = true;
 		}
 		else if (loading)
 		{
