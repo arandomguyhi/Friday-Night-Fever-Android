@@ -835,7 +835,7 @@ class PlayState extends MusicBeatState
 		add(healthBar);
 
 		scoreTxt = new FlxText(FlxG.width / 2 - 235, healthBarBG.y + 35, 0, "", 20);
-		scoreTxt.setFormat(Paths.font("vcr.ttf"), #if !android 18 #else 24 #end, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		updateScoring();
 
 		scoreTxt.borderSize = 1.25;
@@ -2853,15 +2853,21 @@ class PlayState extends MusicBeatState
 
 		if (!note.wasGoodHit)
 		{
-			if (!note.isSustainNote)
-			{
+			if (!note.isSustainNote) {
 				combo += 1;
-
-				// if(SONG.song.toLowerCase() != 'shadow')
 				popUpScore(note);
-			}
-			else
+			} else {
 				totalNotesHit += 1;
+
+				switch (note.rating) {
+					case 'sick':
+						health += 0.04;
+					case 'good':
+						health += 0.02;
+					case 'bad':
+						health += 0.008;
+				}
+			}
 
 			var altSuffix:String = '';
 			if (songScript.variables.exists("bfAltSuffix"))
