@@ -18,7 +18,6 @@ import llua.State;
 import openfl.display.BitmapData;
 import openfl.filters.ShaderFilter;
 import openfl.geom.Matrix;
-import openfl.utils.Assets as OpenFlAssets;
 
 class LuaScript
 {
@@ -374,7 +373,7 @@ class LuaScript
 		LuaL.openlibs(lua);
 		Lua.init_callbacks(lua);
 
-		var result = LuaL.dostring(lua, OpenFlAssets.getText("assets/data/" + PlayState.SONG.song.toLowerCase() + "/modchart.lua")); // execute le file
+		var result = LuaL.dostring(lua, openfl.utils.Assets.getText("assets/data/" + PlayState.SONG.song.toLowerCase() + "/modchart.lua")); // execute le file
 
 		if (result != 0)
 		{

@@ -269,7 +269,7 @@ class PlayState extends MusicBeatState
 		FlxG.sound.cache(Paths.voices(PlayState.SONG.song));
 		FlxG.sound.cache(Paths.inst(PlayState.SONG.song));
 
-		executeModchart = FlxG.save.data.disableModCharts ? false : Xereca.exists('assets/data/' + PlayState.SONG.song.toLowerCase() + '/modchart.lua');
+		executeModchart = FlxG.save.data.disableModCharts ? false : openfl.utils.Assets.exists("assets/data/" + PlayState.SONG.song.toLowerCase() + "/modchart.lua");
 		trace('Modchart is working wohoo!');
 
 		#if windows
@@ -1649,7 +1649,7 @@ class PlayState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		if (controls.DODGE #if android || dodgeButton.buttonA.justPressed #end && !ClientPrefs.botplay && SONG.song.toLowerCase() == 'dead-mans-melody' && spaceDelay <= 0)
+		if (controls.DODGE #if android || dodgeButton != null && dodgeButton.buttonA.justPressed #end && !ClientPrefs.botplay && SONG.song.toLowerCase() == 'dead-mans-melody' && spaceDelay <= 0)
 		{
 			trace("GAY");
 
@@ -1799,6 +1799,7 @@ class PlayState extends MusicBeatState
 			DiscordClient.changePresence("Chart Editor", null, null, true);
 			#end
 			FlxG.switchState(new ChartingState());
+
 			if (luaModchart != null)
 			{
 				luaModchart.die();
