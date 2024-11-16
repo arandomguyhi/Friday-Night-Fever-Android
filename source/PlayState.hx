@@ -42,8 +42,8 @@ import flixel.math.FlxPoint.FlxBasePoint as FlxPoint;
 #end
 #if (sys && !mobile)
 import Discord.DiscordClient;
-import sys.FileSystem;
 #end
+import sys.FileSystem;
 
 #if android
 import android.FlxVirtualPad;
