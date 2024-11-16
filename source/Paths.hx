@@ -55,7 +55,7 @@ class Paths
 		return getPath(file, type, library);
 	}
 
-	inline static public function lua(key:String, ?library:String)
+	inline static public function lua(key:String)
 	{
 		return Asset2File.getPath('assets/data/$key.lua');
 	}
