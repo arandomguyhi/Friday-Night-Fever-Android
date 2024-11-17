@@ -35,7 +35,7 @@ class ClientPrefs
 	public static var msX:Float = -1;
 	public static var msY:Float = -1;
 
-	public static var fpsCap:Int = 120;
+	public static var fpsCap:Int = 60;
 	public static var antialiasing:Bool = true;
 	public static var shaders:Bool = true;
 

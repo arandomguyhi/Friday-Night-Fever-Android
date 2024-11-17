@@ -72,6 +72,7 @@ class InitState extends MusicBeatState
 	{
 		FlxG.save.bind('frenzy', 'fnfever');
 
+		#if windows
 		if (FlxG.save.data.transferred == null)
 		{
 			var path = Sys.getEnv('ANDROID_FILES_DIR') + '/ninjamuffin99/funkin.sol';
@@ -95,6 +96,7 @@ class InitState extends MusicBeatState
 
 			FlxG.save.data.transferred = true;
 		}
+		#end
 	}
 
 	private function loadShadow()

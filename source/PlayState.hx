@@ -269,8 +269,7 @@ class PlayState extends MusicBeatState
 		FlxG.sound.cache(Paths.voices(PlayState.SONG.song));
 		FlxG.sound.cache(Paths.inst(PlayState.SONG.song));
 
-		executeModchart = FlxG.save.data.disableModCharts ? false : openfl.utils.Assets.exists("assets/data/" + PlayState.SONG.song.toLowerCase() + "/modchart.lua");
-		trace('Modchart is working wohoo!');
+		executeModchart = !ClientPrefs.modcharts ? false : openfl.utils.Assets.exists("assets/data/" + PlayState.SONG.song.toLowerCase() + "/modchart.lua");
 
 		#if windows
 		// Discord Rich Presence
