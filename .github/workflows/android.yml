@@ -46,7 +46,7 @@ jobs:
           haxelib run hmm install
           haxelib install flxanimate
           haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp --quiet
-          haxelib git linc_luajit https://github.com/Sirox228/linc_luajit.git
+          haxelib git linc_luajit https://github.com/mcagabe19/linc_luajit-rewriten.git
           haxelib run lime rebuild hxcpp
 
       - name: Configure Android
