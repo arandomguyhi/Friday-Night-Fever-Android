@@ -38,7 +38,7 @@ class LuaScript
 		var p = Lua.tostring(lua, result);
 		var e = getLuaErrorMessage(lua);
 
-		if (e != null)
+		/*if (e != null)
 		{
 			if (p != null)
 			{
@@ -47,12 +47,8 @@ class LuaScript
 				LoadingState.loadAndSwitchState(new MainMenuState());
 			}
 			// trace('err: ' + e);
-		}
-		if (result == null)
-		{
-			return null;
-		}
-		else
+		}*/
+		if (result != null)
 		{
 			return convert(result, type);
 		}

@@ -69,6 +69,7 @@ class Alphabet extends FlxSpriteGroup
 	public function changeText(newText:String) {
 		_finalText = newText;
 		text = newText;
+		addText();
 	}
 
 	public function addText()
