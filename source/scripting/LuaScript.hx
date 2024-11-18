@@ -35,8 +35,6 @@ class LuaScript
 		}
 
 		result = Lua.pcall(lua, args.length, 1, 0);
-		var p = Lua.tostring(lua, result);
-		var e = getLuaErrorMessage(lua);
 
 		/*if (e != null)
 		{
@@ -48,8 +46,10 @@ class LuaScript
 			}
 			// trace('err: ' + e);
 		}*/
-		if (result != null)
-		{
+
+		if (result == null) {
+			return null;
+		} else {
 			return convert(result, type);
 		}
 	}
