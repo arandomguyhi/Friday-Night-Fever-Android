@@ -375,12 +375,12 @@ class LuaScript
 
 		var result = LuaL.dofile(lua, openfl.utils.Assets.getText("assets/data/" + PlayState.SONG.song.toLowerCase() + "/modchart.lua")); // execute le file
 
-		if (result != 0)
+		/*if (result != 0)
 		{
 			Application.current.window.alert("LUA COMPILE ERROR:\n" + Lua.tostring(lua, result), "Kade Engine Modcharts");
 			lua = null;
 			LoadingState.loadAndSwitchState(new MainMenuState());
-		}
+		}*/
 
 		// get some fukin globals up in here bois
 
