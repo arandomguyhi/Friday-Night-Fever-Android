@@ -18,6 +18,7 @@ import openfl.events.UncaughtErrorEvent;
 import openfl.system.System as OpenFlSystem;
 import lime.system.System;
 import sys.FileSystem;
+import sys.io.Process;
 import sys.io.File;
 
 class Main extends Sprite
