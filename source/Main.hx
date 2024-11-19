@@ -11,6 +11,7 @@ import openfl.utils.Assets as Xereca;
 import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
+import openfl.events.UncaughtErrorEvent;
 import openfl.system.System;
 
 class Main extends Sprite
