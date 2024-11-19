@@ -3,6 +3,9 @@ package;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
+import haxe.CallStack.StackItem;
+import haxe.CallStack;
+import haxe.io.Path;
 import flixel.util.FlxColor;
 import lime.app.Application;
 import openfl.Assets;
@@ -12,7 +15,10 @@ import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.events.UncaughtErrorEvent;
-import openfl.system.System;
+import openfl.system.System as OpenFlSystem;
+import lime.system.System;
+import sys.FileSystem;
+import sys.io.File;
 
 class Main extends Sprite
 {
@@ -109,7 +115,7 @@ class Main extends Sprite
 			}
 		}
 
-		System.gc();
+		OpenFlSystem.gc();
 	}
 
 	var fpsCounter:FPS;
