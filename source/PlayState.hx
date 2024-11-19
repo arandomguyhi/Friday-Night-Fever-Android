@@ -923,6 +923,12 @@ class PlayState extends MusicBeatState
 			if (SONG.song.toLowerCase() == 'dead-mans-melody') {
 				dodgeButton = new FlxVirtualPad(NONE, A);
 				dodgeButton.alpha = 0.75;
+
+				var camcontrol = new FlxCamera();
+				FlxG.cameras.add(camcontrol);
+				camcontrol.bgColor.alpha = 0;
+				dodgeButton.cameras = [camcontrol];
+
 				add(dodgeButton);
 			}
 	  	#end
@@ -1648,7 +1654,7 @@ class PlayState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		if (controls.DODGE #if android || dodgeButton != null && dodgeButton.buttonA.justPressed #end && !ClientPrefs.botplay && SONG.song.toLowerCase() == 'dead-mans-melody' && spaceDelay <= 0)
+		if (controls.DODGE #if android || dodgeButton.buttonA.justPressed #end && !ClientPrefs.botplay && SONG.song.toLowerCase() == 'dead-mans-melody' && spaceDelay <= 0)
 		{
 			trace("GAY");
 

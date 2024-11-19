@@ -5,7 +5,7 @@ function onCreatePost()
 	if (PlayState.isStoryMode)
 	{
 		camHUD.fade(FlxColor.BLACK, 0);
-		var video = new MP4Handler();
+		var video = new VideoHandler();
 		video.playVideo(Paths.video("tranquility"));
 		video.finishCallback = function()
 		{

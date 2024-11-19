@@ -1,4 +1,5 @@
 import PlayState;
+import hxcodec.VideoHandler;
 import flixel.util.FlxTimer;
 
 function onCreatePost()
@@ -16,7 +17,7 @@ function onCreatePost()
 
 	camGame.fade(FlxColor.BLACK, 0);
 	camHUD.visible = false;
-	var video = new MP4Handler();
+	var video = new VideoHandler();
 	video.playVideo(Paths.video("gearsIntro"));
 	video.finishCallback = function()
 	{
@@ -78,7 +79,7 @@ function endingCutscene()
 	camGame.fade(FlxColor.BLACK, 0.5, false, function()
 	{
 		camHUD.visible = false;
-		var _video = new MP4Handler();
+		var _video = new VideoHandler();
 		_video.canSkip = true;
 		_video.playVideo(Paths.video("gearsEnding"));
 		_video.finishCallback = game.endSong;

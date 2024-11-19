@@ -1,11 +1,12 @@
 import PlayState;
+import hxcodec.VideoHandler;
 
 function onCreatePost()
 {
 	if (PlayState.isStoryMode)
 	{
 		camHUD.fade(FlxColor.BLACK, 0);
-		var video = new MP4Handler();
+		var video = new VideoHandler();
 		video.playVideo(Paths.video("bloom"));
 		video.finishCallback = function()
 		{

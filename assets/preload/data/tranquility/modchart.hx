@@ -1,5 +1,6 @@
 import flixel.FlxSprite;
 import flixel.util.FlxTimer;
+import hxcodec.VideoHandler;
 import shaders.WiggleEffect;
 
 var wiggleEffect:WiggleEffect;

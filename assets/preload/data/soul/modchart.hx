@@ -1,6 +1,7 @@
 import Character;
+import hxcodec.VideoHandler;
 
-var video:MP4Handler;
+var video:VideoHandler;
 var hallowDum:Character;
 
 function onCreate()
@@ -8,7 +9,7 @@ function onCreate()
 	// i fucking hate hscript
 	// i can do "getGlobalVar("changeBG")" in console but not here for some reason
 	game.scripts.grp[0].variables["changeBG"]();
-	video = new MP4Handler();
+	video = new VideoHandler();
 
 	hallowDum = new Character(0, 0, "hallow-dum");
 	add(hallowDum);
