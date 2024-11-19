@@ -253,6 +253,8 @@ class OptionsState extends MusicBeatState
 				FlxG.switchState(new MainMenuState());
 			}
 		}
+
+		FlxG.save.flush();
 	}
 
 	function updateDescription(?forcedDescription:String)

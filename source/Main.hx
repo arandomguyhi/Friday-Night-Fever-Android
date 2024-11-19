@@ -29,6 +29,8 @@ class Main extends Sprite
 
 	public function new()
 	{
+		SUtil.uncaughtErrorHandler();
+
 		super();
 
 		if (stage != null)
