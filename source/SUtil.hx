@@ -1,154 +1,222 @@
 package;
 
 #if android
-import android.Hardware;
-import android.Permissions;
-import android.os.Build.VERSION;
+import android.content.Context;
+import android.widget.Toast;
 import android.os.Environment;
 #end
-import flash.system.System;
-import flixel.FlxG;
-import flixel.util.FlxStringUtil;
-import haxe.CallStack.StackItem;
 import haxe.CallStack;
 import haxe.io.Path;
 import lime.app.Application;
-import openfl.events.UncaughtErrorEvent;
-import openfl.utils.Assets as OpenFlAssets;
+import lime.system.System as LimeSystem;
+import lime.utils.Assets as LimeAssets;
+import lime.utils.Log as LimeLogger;
 import openfl.Lib;
+import openfl.events.UncaughtErrorEvent;
+#if sys
 import sys.FileSystem;
 import sys.io.File;
+#end
+
+using StringTools;
+
+enum StorageType
+{
+  DATA;
+  EXTERNAL;
+  EXTERNAL_DATA;
+  MEDIA;
+}
 
 /**
  * ...
- * @author: Saw (M.A. Jigsaw)
+ * @author Mihai Alexandru (M.A. Jigsaw)
+ * @modified mcagabe19
  */
 class SUtil
 {
-	/**
-	 * A simple function that checks for storage permissions and game files/folders
-	 */
-	public static function check()
-	{
-		#if android
-		if (!Permissions.getGrantedPermissions().contains(PermissionsList.WRITE_EXTERNAL_STORAGE)
-			&& !Permissions.getGrantedPermissions().contains(PermissionsList.READ_EXTERNAL_STORAGE))
-		{
-			if (VERSION.SDK_INT > 23 || VERSION.SDK_INT == 23)
-			{
-				Permissions.requestPermissions([PermissionsList.WRITE_EXTERNAL_STORAGE, PermissionsList.READ_EXTERNAL_STORAGE]);
+  /**
+   * This returns the external storage path that the game will use by the type.
+   */
+  public static function getStorageDirectory(type:StorageType = EXTERNAL_DATA):String
+  {
+    var daPath:String = '';
 
-				/**
-				 * Basically for now i can't force the app to stop while its requesting a android permission, so this makes the app to stop while its requesting the specific permission
-				 */
-				Application.current.window.alert('If you accepted the permissions you are all good!' + "\nIf you didn't then expect a crash"
-					+ 'Press Ok to see what happens',
-					'Permissions?');
-			}
-			else
-			{
-				Application.current.window.alert('Please grant the game storage permissions in app settings' + '\nPress Ok io close the app', 'Permissions?');
-				System.exit(1);
-			}
-		}
+    #if android
+    if(android.os.Build.VERSION.SDK_INT >= 30) type = MEDIA; //android 11 with no access to data? wtf
+    #end
 
-		if (Permissions.getGrantedPermissions().contains(PermissionsList.WRITE_EXTERNAL_STORAGE)
-			&& Permissions.getGrantedPermissions().contains(PermissionsList.READ_EXTERNAL_STORAGE))
-		{
-			if (!FileSystem.exists(SUtil.getPath()))
-				FileSystem.createDirectory(SUtil.getPath());
+    #if android
+    switch (type)
+    {
+      case DATA:
+        daPath = Context.getFilesDir() + '/';
+      case EXTERNAL_DATA:
+        daPath = Context.getExternalFilesDir(null) + '/';
+      case EXTERNAL:
+        daPath = Environment.getExternalStorageDirectory() + '/.' + Application.current.meta.get('file') + '/';
+      case MEDIA:
+        daPath = Environment.getExternalStorageDirectory() + '/Android/media/' + Application.current.meta.get('packageName') + '/';
+    }
+    #elseif ios
+    daPath = LimeSystem.applicationStorageDirectory;
+    #end
 
-			if (!FileSystem.exists(SUtil.getPath() + "assets"))
-				FileSystem.createDirectory(SUtil.getPath() + "assets");
-		}
-		#end
-	}
+    return daPath;
+  }
 
-	/**
-	 * This returns the external storage path that the game will use
-	 */
-	public static function getPath():String
-	{
-		#if android
-		return Environment.getExternalStorageDirectory() + '/' + '.' + Application.current.meta.get('file') + '/';
-		#else
-		return '';
-		#end
-	}
+  /**
+   * A simple function that checks for game files/folders.
+   */
+  public static function checkFiles():Void
+  {
+    #if mobile
+    if (!FileSystem.exists(SUtil.getStorageDirectory() + 'mods'))
+    {
+      Lib.application.window.alert("Whoops, seems like you didn't extract the mods folder from the .APK!\nPlease copy the mods folder from the .APK to the root folder\n"
+        + SUtil.getStorageDirectory(), 'Error!');
+      LimeSystem.exit(1);
+    }
+    else if (FileSystem.exists(SUtil.getStorageDirectory() + 'mods') && !FileSystem.isDirectory(SUtil.getStorageDirectory() + 'mods'))
+    {
+      Lib.application.window.alert("Why did you create a folder called mods instead of copying the mods directory from the .APK?, expect a crash.", 'Error!');
+      LimeSystem.exit(1);
+    }
+    #end
+  }
+  /**
+   * Uncaught error handler, original made by: Sqirra-RNG and YoshiCrafter29
+   */
+  public static function uncaughtErrorHandler():Void
+  {
+    Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onError);
+    Lib.application.onExit.add(function(exitCode:Int) {
+      if (Lib.current.loaderInfo.uncaughtErrorEvents.hasEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR))
+        Lib.current.loaderInfo.uncaughtErrorEvents.removeEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onError);
+    });
+  }
 
-	/**
-	 * Uncaught error handler, original made by: sqirra-rng
-	 */
-	public static function uncaughtErrorHandler()
-	{
-		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, function(u:UncaughtErrorEvent)
-		{
-			var callStack:Array<StackItem> = CallStack.exceptionStack(true);
-			var errMsg:String = '';
+  private static function onError(e:UncaughtErrorEvent):Void
+  {
+    var stack:Array<String> = [];
+    stack.push(e.error);
 
-			for (stackItem in callStack)
-			{
-				switch (stackItem)
-				{
-					case FilePos(s, file, line, column):
-						errMsg += file + ' (line ' + line + ')\n';
-					default:
-						Sys.println(stackItem);
-				}
-			}
+    for (stackItem in CallStack.exceptionStack(true))
+    {
+      switch (stackItem)
+      {
+        case CFunction:
+          stack.push('C Function');
+        case Module(m):
+          stack.push('Module ($m)');
+        case FilePos(s, file, line, column):
+          stack.push('$file (line $line)');
+        case Method(classname, method):
+          stack.push('$classname (method $method)');
+        case LocalFunction(name):
+          stack.push('Local Function ($name)');
+      }
+    }
 
-			errMsg += u.error;
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
 
-			Sys.println(errMsg);
-			Application.current.window.alert(errMsg, 'Error!');
+    final msg:String = stack.join('\n');
 
-			try
-			{
-				if (!FileSystem.exists(SUtil.getPath() + 'crash'))
-					FileSystem.createDirectory(SUtil.getPath() + 'crash');
+    #if sys
+    try
+    {
+      if (!FileSystem.exists(SUtil.getStorageDirectory() + 'logs')) FileSystem.createDirectory(SUtil.getStorageDirectory() + 'logs');
 
-				File.saveContent(SUtil.getPath() + 'crash/' + Application.current.meta.get('file') + '_'
-					+ FlxStringUtil.formatTime(Date.now().getTime(), true) + '.log',
-					errMsg + "\n");
-			}
-			#if android
-			catch (e:Dynamic)
-				Hardware.toast("Error!\nClouldn't save the crash dump because:\n" + e, 2);
-			#end
+      File.saveContent(SUtil.getStorageDirectory()
+        + 'logs/'
+        + Lib.application.meta.get('file')
+        + '.txt',
+        msg
+        + '\n');
+    }
+    catch (e:Dynamic)
+    {
+      #if (android && debug)
+      Toast.makeText("Error!\nClouldn't save the crash dump because:\n" + e, Toast.LENGTH_LONG);
+      #else
+      LimeLogger.println("Error!\nClouldn't save the crash dump because:\n" + e);
+      #end
+    }
+    #end
 
-			System.exit(1);
-		});
-	}
+    LimeLogger.println(msg);
+    Lib.application.window.alert(msg, 'Error!');
+    LimeSystem.exit(1);
+  }
 
-	public static function saveContent(fileName:String = 'file', fileExtension:String = '.json', fileData:String = 'you forgot to add something in your code')
-	{
-		try
-		{
-			if (!FileSystem.exists(SUtil.getPath() + 'saves'))
-				FileSystem.createDirectory(SUtil.getPath() + 'saves');
+  /**
+   * This is mostly a fork of https://github.com/openfl/hxp/blob/master/src/hxp/System.hx#L595
+   */
+  #if sys
+  public static function mkDirs(directory:String):Void
+  {
+    var total:String = '';
+    if (directory.substr(0, 1) == '/') total = '/';
 
-			File.saveContent(SUtil.getPath() + 'saves/' + fileName + fileExtension, fileData);
-			Hardware.toast("File Saved Successfully!", 2);
-		}
-		#if android
-		catch (e:Dynamic)
-			Hardware.toast("Error!\nClouldn't save the file because:\n" + e, 2);
-		#end
-	}
+    var parts:Array<String> = directory.split('/');
+    if (parts.length > 0 && parts[0].indexOf(':') > -1) parts.shift();
 
-	public static function copyContent(copyPath:String, savePath:String)
-	{
-		try
-		{
-			if (!FileSystem.exists(savePath) && OpenFlAssets.exists(copyPath))
-				File.saveBytes(savePath, OpenFlAssets.getBytes(copyPath));
-		}
-		#if android
-		catch (e:Dynamic)
-			Hardware.toast("Error!\nClouldn't copy the file because:\n" + e, 2);
-		#end
-	}
+    for (part in parts)
+    {
+      if (part != '.' && part != '')
+      {
+        if (total != '' && total != '/') total += '/';
 
-	public static function getDisplayRefreshRate():Int
-		return Application.current.window.displayMode.refreshRate;
+        total += part;
+
+        if (!FileSystem.exists(total)) FileSystem.createDirectory(total);
+      }
+    }
+  }
+
+  public static function saveContent(fileName:String = 'file', fileExtension:String = '.json',
+      fileData:String = 'you forgot to add something in your code lol'):Void
+  {
+    try
+    {
+      if (!FileSystem.exists(SUtil.getStorageDirectory() + 'saves')) FileSystem.createDirectory(SUtil.getStorageDirectory() + 'saves');
+
+      File.saveContent(SUtil.getStorageDirectory() + 'saves/' + fileName + fileExtension, fileData);
+    }
+    catch (e:Dynamic)
+    {
+      #if (android && debug)
+      Toast.makeText("Error!\nClouldn't save the file because:\n" + e, Toast.LENGTH_LONG);
+      #else
+      LimeLogger.println("Error!\nClouldn't save the file because:\n" + e);
+      #end
+    }
+  }
+
+  /**
+   * Copies the content of copyPath and pastes it in savePath.
+   */
+  public static function copyContent(copyPath:String, savePath:String):Void
+  {
+    try
+    {
+      if (!FileSystem.exists(savePath) && LimeAssets.exists(copyPath))
+      {
+        if (!FileSystem.exists(Path.directory(savePath))) SUtil.mkDirs(Path.directory(savePath));
+
+        File.saveBytes(savePath, LimeAssets.getBytes(copyPath));
+      }
+    }
+    catch (e:Dynamic)
+    {
+      #if (android && debug)
+      Toast.makeText('Error!\nClouldn\'t copy the $copyPath because:\n' + e, Toast.LENGTH_LONG);
+      #else
+      LimeLogger.println('Error!\nClouldn\'t copy the $copyPath because:\n' + e);
+      #end
+    }
+  }
+  #end
 }

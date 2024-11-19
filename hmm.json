@@ -31,10 +31,9 @@
       "version": null
     },
     {
-      "name":"extension-androidtools",
-      "type":"git",
-      "ref":"main",
-      "url":"https://github.com/VegethYT/extension-androidtools.git"
+      "name": "extension-androidtools",
+      "type": "haxelib",
+      "version": "1.8.0"
     },
     {
       "name": "hxCodec",
