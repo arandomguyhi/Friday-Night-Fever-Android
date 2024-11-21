@@ -130,6 +130,10 @@
 	<!-- Show debug traces for hxCodec -->
 	<!--<haxedef name="HXC_DEBUG_TRACE" if="debug" />-->
 
+	<!-- Enable Null Object Reference check for crash dialogue -->
+	<haxedef name="HXCPP_CHECK_POINTER" />
+	<haxedef name="HXCPP_STACK_LINE" />
+
 	<!-- Make's the game use less ram -->
 	<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
 

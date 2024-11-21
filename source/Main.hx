@@ -42,6 +42,8 @@ class Main extends Sprite
 	{
 		super();
 
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
+
 		if (stage != null)
 		{
 			init();
@@ -70,8 +72,6 @@ class Main extends Sprite
 		fpsCounter = new FPS_MEM(10, 3, 0xFFFFFF);
 		addChild(fpsCounter);
 		toggleFPS(ClientPrefs.fps);
-
-		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 
 		#if desktop
 		Application.current.window.onClose.add(function()
