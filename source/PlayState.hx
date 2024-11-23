@@ -29,6 +29,7 @@ import openfl.filters.BitmapFilter;
 import openfl.filters.ShaderFilter;
 import openfl.system.System;
 import hxcodec.VideoHandler;
+import android.FlxVirtualPad;
 import scripting.*;
 import shaders.*;
 import sprites.*;
@@ -44,10 +45,6 @@ import flixel.math.FlxPoint.FlxBasePoint as FlxPoint;
 import Discord.DiscordClient;
 #end
 import sys.FileSystem;
-
-#if android
-import android.FlxVirtualPad;
-#end
 
 class PlayState extends MusicBeatState
 {
@@ -1654,7 +1651,7 @@ class PlayState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		if (controls.DODGE #if android || dodgeButton.buttonA.justPressed #end && !ClientPrefs.botplay && SONG.song.toLowerCase() == 'dead-mans-melody' && spaceDelay <= 0)
+		if ((controls.DODGE #if android || dodgeButton != null && dodgeButton.buttonA.justPressed #end) && !ClientPrefs.botplay && SONG.song.toLowerCase() == 'dead-mans-melody' && spaceDelay <= 0)
 		{
 			trace("GAY");
 
