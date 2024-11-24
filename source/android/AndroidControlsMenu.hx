@@ -68,7 +68,7 @@ class AndroidControlsMenu extends MusicBeatState
 		var savebutton = new FlxButton(exitbutton.x, exitbutton.y + 100, "Save", function()
 		{
 			save();
-			FlxG.switchState(new OptionsMenu());
+			FlxG.switchState(new OptionsState());
 		});
 		savebutton.setGraphicSize(Std.int(savebutton.width) * 3);
 		savebutton.label.setFormat(null, 16, 0x333333, "center");
